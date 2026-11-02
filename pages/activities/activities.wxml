@@ -1,0 +1,122 @@
+<view class="page">
+  <!-- Hero -->
+  <view class="hero-quiet">
+    <view class="shell">
+      <view class="eyebrow"><view class="dot"></view>WALKS / 一次同行</view>
+      <h1 class="serif">以活动为第一入口</h1>
+      <p class="hero-quiet__desc">
+        一次徒步属于一群人。发起人建立一次同行，其他人申请加入；只有通过的人能看到照片、成员与集合点。
+      </p>
+      <view class="hero-quiet__stats">
+        <text class="mono">{{publicCount}} 次公开活动 · {{photoTotal}} 张同行影像 · 邀请线 3.0</text>
+      </view>
+      <button class="btn btn--forest" bindtap="onNewActivity">发起一次活动</button>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading">
+    <view class="loading-dots"><i></i><i></i><i></i></view>正在查看山口…
+  </view>
+
+  <view wx:elif="{{loadError}}" class="loading">
+    <view>{{loadError}}</view>
+    <button class="btn btn--outline btn--sm" style="margin-top: 24rpx;" bindtap="onRetry">再试一次</button>
+  </view>
+
+  <block wx:else>
+    <!-- 入队申请提醒 -->
+    <view wx:if="{{pendingRequests.length > 0}}" class="banner banner--signal shell-pad" bindtap="onGoRequests">
+      <view>
+        <text class="mono">REQUESTS / 入队申请</text>
+        <p>有 {{pendingRequests.length}} 份入队申请，正在等你确认。</p>
+      </view>
+      <text class="banner__arrow">→</text>
+    </view>
+
+    <!-- 我的活动 -->
+    <view wx:if="{{loggedIn && myActivities.length > 0}}" class="shell">
+      <view class="section-head">
+        <h2 class="serif">我的活动</h2>
+        <text class="text-link" bindtap="onGoRequests">全部管理</text>
+      </view>
+      <view class="activity-list">
+        <view class="activity-card" wx:for="{{myActivities}}" wx:key="id" data-slug="{{item.slug}}" bindtap="onOpen">
+          <view class="activity-card__head">
+            <text class="badge {{item.phase === 'upcoming' ? 'badge--signal' : ''}}">{{item.phaseLabel}}</text>
+            <text class="mono">{{item.dateLabel}}</text>
+          </view>
+          <view class="activity-card__title serif">{{item.title}}</view>
+          <view class="activity-card__meta">
+            <text wx:if="{{item.region}}">{{item.region}}</text>
+            <text>同行 {{item.memberCount}} 人</text>
+            <text>影像 {{item.photoCount}} 张</text>
+            <text wx:if="{{item.pendingCount > 0}}" class="activity-card__pending">{{item.pendingCount}} 份待确认</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{!loggedIn}}" class="shell">
+      <view class="banner banner--plain" bindtap="onLogin">
+        <text>登录后可以看到你的活动、申请与相册。</text>
+        <text class="banner__arrow">→</text>
+      </view>
+    </view>
+
+    <!-- 正在招募 -->
+    <view class="shell" wx:if="{{recruiting.length > 0}}">
+      <view class="section-head">
+        <h2 class="serif">正在招募</h2>
+        <text class="mono">RECRUITING</text>
+      </view>
+      <view class="activity-list">
+        <view class="activity-card" wx:for="{{recruiting}}" wx:key="id" data-slug="{{item.slug}}" bindtap="onOpen">
+          <view class="activity-card__head">
+            <text class="badge {{item.phase === 'upcoming' ? 'badge--signal' : ''}}">{{item.phaseLabel}}</text>
+            <text class="mono">{{item.dateLabel}}</text>
+          </view>
+          <view class="activity-card__title serif">{{item.title}}</view>
+          <view class="activity-card__summary" wx:if="{{item.summary}}">{{item.summary}}</view>
+          <view class="activity-card__meta">
+            <text wx:if="{{item.region}}">{{item.region}}</text>
+            <text>{{item.difficultyLabel}}</text>
+            <text>同行 {{item.memberCount}} 人</text>
+            <text>影像 {{item.photoCount}} 张</text>
+          </view>
+          <view class="activity-card__host">
+            <text class="mono">发起 · {{item.hostName}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 已经走过 -->
+    <view class="shell" wx:if="{{past.length > 0}}">
+      <view class="section-head">
+        <h2 class="serif">已经走过</h2>
+        <text class="mono">ARCHIVED WALKS</text>
+      </view>
+      <view class="activity-list">
+        <view class="activity-card activity-card--past" wx:for="{{past}}" wx:key="id" data-slug="{{item.slug}}" bindtap="onOpen">
+          <view class="activity-card__head">
+            <text class="badge badge--mute">{{item.phaseLabel}}</text>
+            <text class="mono">{{item.dateLabel}}</text>
+          </view>
+          <view class="activity-card__title serif">{{item.title}}</view>
+          <view class="activity-card__meta">
+            <text wx:if="{{item.region}}">{{item.region}}</text>
+            <text>影像 {{item.photoCount}} 张</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <empty-state
+      wx:if="{{recruiting.length === 0 && past.length === 0 && myActivities.length === 0}}"
+      title="山口还很安静"
+      desc="还没有可以加入的活动。发起一次同行，或者稍后再来看看。"
+      actionText="发起一次活动"
+      actionTab="/pages/activities/activities"
+    />
+  </block>
+</view>

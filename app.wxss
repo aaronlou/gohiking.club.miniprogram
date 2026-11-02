@@ -1,0 +1,333 @@
+/* 山行档案 · 设计系统 —— 纸张 / 墨绿 / 信号橙 */
+
+page {
+  --paper: #f3eee3;
+  --paper-deep: #e9e2d3;
+  --paper-light: #fbf8f1;
+  --ink: #1b211a;
+  --ink-soft: #343c31;
+  --ink-mute: #5f665a;
+  --forest: #202b22;
+  --moss: #475847;
+  --sage: #81907a;
+  --mist: #c6d0c4;
+  --signal: #df5a34;
+  --signal-deep: #b94525;
+  --amber: #c89a58;
+  --white: #fffdf7;
+  --danger: #a73a25;
+  --line: rgba(27, 33, 26, 0.16);
+  --line-strong: rgba(27, 33, 26, 0.32);
+  --radius: 2px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 28rpx;
+  line-height: 1.6;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
+}
+
+/* ---------- 版式 ---------- */
+.shell {
+  padding: 32rpx 40rpx;
+}
+
+.serif {
+  font-family: Georgia, "Songti SC", "Noto Serif SC", "STSong", serif;
+}
+
+.mono {
+  font-size: 20rpx;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-family: "SF Mono", Menlo, Consolas, "Courier New", monospace;
+  color: var(--ink-mute);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12rpx;
+  font-size: 20rpx;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-family: "SF Mono", Menlo, Consolas, "Courier New", monospace;
+  color: var(--ink-mute);
+}
+
+.eyebrow .dot {
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background: var(--signal);
+  flex-shrink: 0;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 56rpx 0 24rpx;
+}
+
+.section-head h2 {
+  font-size: 40rpx;
+  font-weight: 600;
+  font-family: Georgia, "Songti SC", "Noto Serif SC", serif;
+  color: var(--ink);
+}
+
+.divider {
+  height: 1rpx;
+  background: var(--line);
+  margin: 32rpx 0;
+}
+
+/* ---------- 按钮 ---------- */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  min-height: 88rpx;
+  padding: 0 36rpx;
+  border: 1rpx solid var(--ink);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--ink);
+  font-size: 28rpx;
+  line-height: 1;
+  box-sizing: border-box;
+  transition: opacity 0.2s var(--ease);
+}
+
+.btn::after {
+  border: none;
+}
+
+.btn--ink {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.btn--forest {
+  background: var(--forest);
+  color: var(--paper);
+  border-color: var(--forest);
+}
+
+.btn--signal {
+  background: var(--signal);
+  border-color: var(--signal);
+  color: var(--white);
+}
+
+.btn--outline {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--line-strong);
+}
+
+.btn--paper {
+  background: var(--paper-light);
+  border-color: var(--line);
+  color: var(--ink-soft);
+}
+
+.btn--sm {
+  min-height: 64rpx;
+  padding: 0 24rpx;
+  font-size: 24rpx;
+}
+
+.btn--full {
+  width: 100%;
+}
+
+.btn--disabled {
+  opacity: 0.45;
+}
+
+.text-link {
+  color: var(--signal-deep);
+  font-size: 24rpx;
+  text-decoration: underline;
+}
+
+/* ---------- 卡片 / 标签 ---------- */
+.card {
+  background: var(--paper-light);
+  border: 1rpx solid var(--line);
+  border-radius: var(--radius);
+  padding: 28rpx;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10rpx;
+  padding: 10rpx 22rpx;
+  border: 1rpx solid var(--line-strong);
+  border-radius: var(--radius);
+  font-size: 24rpx;
+  color: var(--ink-soft);
+  background: transparent;
+  line-height: 1;
+}
+
+.chip--active {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.chip .chip-dot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+}
+
+.tag {
+  display: inline-block;
+  padding: 6rpx 16rpx;
+  border: 1rpx dashed var(--line-strong);
+  border-radius: var(--radius);
+  font-size: 20rpx;
+  color: var(--ink-mute);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6rpx 16rpx;
+  border-radius: var(--radius);
+  font-size: 20rpx;
+  letter-spacing: 0.06em;
+  background: rgba(71, 88, 71, 0.12);
+  color: var(--moss);
+}
+
+.badge--signal {
+  background: rgba(223, 90, 52, 0.14);
+  color: var(--signal-deep);
+}
+
+.badge--danger {
+  background: rgba(167, 58, 37, 0.12);
+  color: var(--danger);
+}
+
+.badge--mute {
+  background: rgba(95, 102, 90, 0.12);
+  color: var(--ink-mute);
+}
+
+/* ---------- 表单 ---------- */
+.field {
+  margin-bottom: 28rpx;
+}
+
+.field__label {
+  display: block;
+  font-size: 24rpx;
+  color: var(--ink-mute);
+  margin-bottom: 12rpx;
+  letter-spacing: 0.05em;
+}
+
+.field__label.required::before {
+  content: "* ";
+  color: var(--signal);
+}
+
+.input,
+.textarea,
+.picker {
+  width: 100%;
+  min-height: 88rpx;
+  padding: 20rpx 24rpx;
+  box-sizing: border-box;
+  background: var(--paper-light);
+  border: 1rpx solid var(--line-strong);
+  border-radius: var(--radius);
+  font-size: 30rpx;
+  color: var(--ink);
+}
+
+.textarea {
+  min-height: 180rpx;
+  line-height: 1.5;
+}
+
+.input--readonly {
+  background: var(--paper-deep);
+  color: var(--ink-mute);
+}
+
+.form-help {
+  font-size: 22rpx;
+  color: var(--ink-mute);
+  margin-top: 10rpx;
+}
+
+/* ---------- 图片网格 ---------- */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20rpx;
+}
+
+/* ---------- 空态 ---------- */
+.empty {
+  padding: 88rpx 40rpx;
+  text-align: center;
+}
+
+.empty h3 {
+  font-size: 34rpx;
+  font-family: Georgia, "Songti SC", serif;
+  margin-bottom: 12rpx;
+}
+
+.empty p {
+  font-size: 24rpx;
+  color: var(--ink-mute);
+  margin-bottom: 32rpx;
+}
+
+/* ---------- 加载 ---------- */
+.loading {
+  padding: 64rpx;
+  text-align: center;
+  color: var(--ink-mute);
+  font-size: 24rpx;
+}
+
+.loading-dots {
+  display: inline-flex;
+  gap: 12rpx;
+  margin-right: 16rpx;
+  vertical-align: middle;
+}
+
+.loading-dots i {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background: var(--sage);
+  animation: dot-pulse 1.2s infinite;
+}
+
+.loading-dots i:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-dots i:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes dot-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}

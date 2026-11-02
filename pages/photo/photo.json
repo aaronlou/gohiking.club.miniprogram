@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "照片",
+  "usingComponents": {
+    "score-meter": "/components/score-meter/score-meter",
+    "photo-tile": "/components/photo-tile/photo-tile"
+  }
+}

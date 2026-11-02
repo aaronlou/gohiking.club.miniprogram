@@ -1,0 +1,49 @@
+<view class="page">
+  <view class="auth">
+    <view class="eyebrow"><view class="dot"></view>FIELD MEMBER / 档案成员</view>
+    <h1 class="serif auth__title">{{mode === 'login' ? '进入我的档案' : '成为档案成员'}}</h1>
+    <p class="auth__desc">
+      {{mode === 'login' ? '用邮箱与密码登录，继续把山野收进来。' : '只需要一个邮箱。注册后，你的照片会被 AI 认真观看：3 分以上进入活动相册，公开与否由你决定。'}}
+    </p>
+
+    <view class="mode-tabs">
+      <view class="mode-tab {{mode === 'login' ? 'is-active' : ''}}" data-mode="login" bindtap="onMode">登录</view>
+      <view class="mode-tab {{mode === 'register' ? 'is-active' : ''}}" data-mode="register" bindtap="onMode">注册</view>
+    </view>
+
+    <view class="field">
+      <text class="field__label required">邮箱</text>
+      <input class="input" type="text" value="{{email}}" bindinput="onEmail" placeholder="you@example.com" placeholder-class="ph" />
+    </view>
+
+    <view class="field">
+      <text class="field__label required">密码（至少 8 位）</text>
+      <input class="input" password value="{{password}}" bindinput="onPassword" placeholder="••••••••" placeholder-class="ph" />
+    </view>
+
+    <button
+      class="btn btn--signal btn--full auth__submit {{submitting ? 'btn--disabled' : ''}}"
+      bindtap="onSubmit"
+      disabled="{{submitting}}"
+    >
+      {{submitting ? '正在开门…' : (mode === 'login' ? '进入我的档案' : '注册并开始')}}
+    </button>
+
+    <view class="auth__terms">
+      <text class="mono">HOW IT WORKS</text>
+      <p>上传的照片会由视觉模型观看并写下手记；3.0 分是进入公共档案的邀请线；照片版权始终属于拍摄者。</p>
+    </view>
+
+    <view class="dev">
+      <view class="dev__toggle mono" bindtap="onToggleDev">开发选项（服务器地址）{{showDev ? ' ↑' : ' ↓'}}</view>
+      <block wx:if="{{showDev}}">
+        <view class="field" style="margin-top: 20rpx;">
+          <text class="field__label">API 服务器（默认 {{defaultServer}}；本地开发填 http://127.0.0.1:3000）</text>
+          <input class="input" value="{{serverUrl}}" bindinput="onServerUrl" placeholder="https://gohiking.club" placeholder-class="ph" />
+        </view>
+        <button class="btn btn--outline btn--sm" bindtap="onApplyServer">保存并使用此服务器</button>
+        <text class="form-help">切换后会清除本地登录态，请重新登录。</text>
+      </block>
+    </view>
+  </view>
+</view>

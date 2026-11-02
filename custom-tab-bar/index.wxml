@@ -1,0 +1,20 @@
+<view class="dock">
+  <view
+    wx:for="{{list}}"
+    wx:key="path"
+    class="dock__item {{selected === index ? 'is-active' : ''}} {{item.primary ? 'is-primary' : ''}}"
+    data-path="{{item.path}}"
+    bindtap="onTap"
+  >
+    <block wx:if="{{item.primary}}">
+      <view class="dock__primary-btn">
+        <view class="dock__primary-plus"></view>
+      </view>
+      <text class="dock__text">{{item.text}}</text>
+    </block>
+    <block wx:else>
+      <view class="dock__icon dock__icon--{{index}}"></view>
+      <text class="dock__text">{{item.text}}</text>
+    </block>
+  </view>
+</view>

@@ -1,0 +1,78 @@
+.page {
+  min-height: 100vh;
+  background: var(--paper-deep);
+  padding: 40rpx;
+  box-sizing: border-box;
+}
+
+.auth {
+  background: var(--paper-light);
+  border: 1rpx solid var(--line);
+  border-radius: var(--radius);
+  padding: 56rpx 44rpx;
+}
+
+.auth__title {
+  font-size: 52rpx;
+  color: var(--forest);
+  margin: 24rpx 0 18rpx;
+}
+
+.auth__desc {
+  font-size: 26rpx;
+  color: var(--ink-mute);
+  line-height: 1.8;
+  margin-bottom: 36rpx;
+}
+
+.mode-tabs {
+  display: flex;
+  gap: 12rpx;
+  margin-bottom: 36rpx;
+}
+
+.mode-tab {
+  padding: 14rpx 30rpx;
+  font-size: 26rpx;
+  border: 1rpx solid var(--line-strong);
+  border-radius: var(--radius);
+  color: var(--ink-mute);
+}
+
+.mode-tab.is-active {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.auth__submit {
+  margin-top: 8rpx;
+}
+
+.auth__terms {
+  margin-top: 36rpx;
+  padding: 24rpx 28rpx;
+  background: rgba(71, 88, 71, 0.08);
+  border-radius: var(--radius);
+}
+
+.auth__terms p {
+  font-size: 22rpx;
+  color: var(--ink-mute);
+  margin-top: 8rpx;
+  line-height: 1.7;
+}
+
+.dev {
+  margin-top: 36rpx;
+  padding-top: 28rpx;
+  border-top: 1rpx dashed var(--line-strong);
+}
+
+.dev__toggle {
+  color: var(--sage);
+}
+
+.ph {
+  color: var(--sage);
+}

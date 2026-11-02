@@ -1,0 +1,145 @@
+.page {
+  padding-bottom: 200rpx;
+}
+
+.hero-quiet {
+  background: var(--paper-deep);
+  padding: 48rpx 0 0;
+}
+
+.hero-quiet h1 {
+  font-size: 52rpx;
+  font-weight: 600;
+  margin: 20rpx 0 16rpx;
+  color: var(--forest);
+}
+
+.hero-quiet__stats {
+  font-size: 20rpx;
+}
+
+.view-tabs {
+  display: flex;
+  margin-top: 32rpx;
+}
+
+.view-tab {
+  flex: 1;
+  text-align: center;
+  padding: 22rpx 0;
+  font-size: 26rpx;
+  color: var(--ink-mute);
+  border-bottom: 4rpx solid transparent;
+}
+
+.view-tab.is-active {
+  color: var(--ink);
+  font-weight: 600;
+  border-bottom-color: var(--signal);
+}
+
+.filter-bar {
+  margin-top: 24rpx;
+  padding: 8rpx 40rpx;
+  white-space: nowrap;
+  background: var(--paper);
+}
+
+.filter-bar__inner {
+  display: inline-flex;
+  gap: 16rpx;
+}
+
+.group-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 48rpx 0 8rpx;
+}
+
+.group-head__title {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+}
+
+.group-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+}
+
+.group-name {
+  font-size: 36rpx;
+  font-weight: 600;
+}
+
+.group-note {
+  font-size: 22rpx;
+  color: var(--ink-mute);
+  margin-bottom: 24rpx;
+}
+
+/* 摄影师卡片 */
+.author-card {
+  background: var(--paper-light);
+  border: 1rpx solid var(--line);
+  border-radius: var(--radius);
+  padding: 28rpx;
+  margin-bottom: 28rpx;
+}
+
+.author-card__head {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  margin-bottom: 22rpx;
+}
+
+.avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: var(--forest);
+  color: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  font-family: Georgia, serif;
+  flex-shrink: 0;
+}
+
+.author-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.author-card__name {
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.author-card__stats {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4rpx;
+  font-size: 20rpx;
+  color: var(--ink-mute);
+  font-family: Menlo, monospace;
+}
+
+.author-card__thumbs {
+  display: flex;
+  gap: 12rpx;
+}
+
+.author-card__thumb {
+  flex: 1;
+  height: 160rpx;
+  background: var(--paper-deep);
+  border-radius: var(--radius);
+}

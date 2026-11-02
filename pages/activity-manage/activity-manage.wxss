@@ -1,0 +1,164 @@
+.page {
+  padding: 48rpx 40rpx 120rpx;
+}
+
+.head__title {
+  font-size: 44rpx;
+  color: var(--forest);
+  margin: 20rpx 0 16rpx;
+}
+
+.head__row {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  flex-wrap: wrap;
+  margin-bottom: 24rpx;
+}
+
+.section {
+  margin-top: 48rpx;
+}
+
+.section-head {
+  margin-bottom: 24rpx;
+}
+
+.section-head h2 {
+  font-size: 36rpx;
+  font-weight: 600;
+  font-family: Georgia, "Songti SC", serif;
+}
+
+.quiet-card {
+  text-align: center;
+  color: var(--ink-mute);
+  font-size: 24rpx;
+  padding: 40rpx;
+}
+
+.request-card {
+  background: var(--paper-light);
+  border: 1rpx solid var(--line);
+  border-radius: var(--radius);
+  padding: 26rpx;
+  margin-bottom: 20rpx;
+}
+
+.request-card__head {
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+}
+
+.request-card__avatar {
+  width: 76rpx;
+  height: 76rpx;
+  border-radius: 50%;
+  background: var(--forest);
+  color: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30rpx;
+  font-family: Georgia, serif;
+}
+
+.request-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.request-card__name {
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.request-card__bio {
+  display: block;
+  font-size: 22rpx;
+  color: var(--ink-mute);
+  margin-top: 12rpx;
+}
+
+.request-card__note {
+  margin-top: 14rpx;
+  padding: 16rpx 20rpx;
+  border-left: 4rpx solid var(--signal);
+  background: rgba(223, 90, 52, 0.05);
+  font-size: 24rpx;
+  color: var(--ink-soft);
+}
+
+.request-card__actions {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 20rpx;
+}
+
+.request-card__actions .btn {
+  flex: 1;
+}
+
+.invite-row {
+  display: flex;
+  gap: 16rpx;
+}
+
+.invite-input {
+  flex: 1;
+}
+
+.invite-btn {
+  flex-shrink: 0;
+}
+
+.member-item {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 16rpx 20rpx;
+  background: var(--paper-light);
+  border: 1rpx solid var(--line);
+  border-radius: var(--radius);
+  margin-bottom: 12rpx;
+}
+
+.member-item__main {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  flex: 1;
+  min-width: 0;
+}
+
+.member-item__avatar {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  background: var(--moss);
+  color: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26rpx;
+  font-family: Georgia, serif;
+}
+
+.member-item__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2rpx;
+  font-size: 26rpx;
+  flex: 1;
+  min-width: 0;
+}
+
+.member-item__remove {
+  flex-shrink: 0;
+}
+
+.ph {
+  color: var(--sage);
+}

@@ -1,0 +1,82 @@
+.page {
+  padding-bottom: 120rpx;
+}
+
+.hero {
+  padding: 56rpx 40rpx 48rpx;
+  background: var(--paper-deep);
+}
+
+.hero__avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  background: var(--forest);
+  color: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48rpx;
+  font-family: Georgia, serif;
+  margin-bottom: 20rpx;
+}
+
+.hero__info {
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+  margin-bottom: 16rpx;
+}
+
+.hero__name {
+  font-size: 52rpx;
+  font-weight: 600;
+  color: var(--forest);
+}
+
+.hero__bio {
+  font-size: 26rpx;
+  color: var(--ink-mute);
+  line-height: 1.8;
+  margin-bottom: 28rpx;
+}
+
+.hero__stats {
+  display: flex;
+  margin-bottom: 20rpx;
+}
+
+.hero-stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6rpx;
+  border-left: 1rpx solid var(--line);
+}
+
+.hero-stat:first-child {
+  border-left: none;
+}
+
+.hero-stat__num {
+  font-size: 40rpx;
+  font-family: Georgia, "Songti SC", serif;
+  font-weight: 600;
+}
+
+.hero-stat__label {
+  font-size: 20rpx;
+  color: var(--ink-mute);
+}
+
+.hero__since {
+  display: block;
+  margin-bottom: 28rpx;
+  font-size: 18rpx;
+}
+
+.hero__actions {
+  display: flex;
+  gap: 16rpx;
+}

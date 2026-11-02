@@ -1,0 +1,19 @@
+<view class="meter-block">
+  <view class="meter-block__top">
+    <text class="mono">WATCH NOTE / 观看分</text>
+    <text class="meter-block__verdict {{rejected ? 'is-rejected' : ''}}">{{verdict}}</text>
+  </view>
+  <view class="meter-block__number">
+    <text class="score">{{scoreLabel}}</text>
+    <text class="total">/ 5.0</text>
+  </view>
+  <view class="meter-block__bar">
+    <view class="fill {{scoreLabel !== '—' && percent >= 60 ? 'is-pass' : ''}}" style="width: {{percent}}%"></view>
+    <view class="mark"></view>
+  </view>
+  <view class="meter-block__legend">
+    <text>1.0</text>
+    <text>公共档案 3.0</text>
+    <text>5.0</text>
+  </view>
+</view>

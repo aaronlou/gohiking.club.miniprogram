@@ -1,0 +1,142 @@
+<view class="page">
+  <!-- 未登录 -->
+  <block wx:if="{{!loggedIn}}">
+    <view class="login-hero">
+      <view class="eyebrow"><view class="dot"></view>MY ARCHIVE / 我的档案</view>
+      <h1 class="serif">你的山野，也在档案里</h1>
+      <p>登录后可以管理照片、活动与资料；上传的每一张照片都会被认真观看。</p>
+      <button class="btn btn--signal" bindtap="onLogin">登录 / 注册</button>
+    </view>
+  </block>
+
+  <block wx:else>
+    <!-- 成员卡 -->
+    <view class="member-card">
+      <view class="avatar">{{user.name[0] || '山'}}</view>
+      <view class="member-card__info">
+        <text class="member-card__name serif">{{user.name}}</text>
+        <text class="mono">@{{user.username}}{{user.homeBase ? ' · ' + user.homeBase : ''}}</text>
+      </view>
+      <view class="member-card__actions">
+        <text class="text-link" bindtap="onProfile">编辑资料</text>
+      </view>
+    </view>
+
+    <view wx:if="{{loading}}" class="loading">
+      <view class="loading-dots"><i></i><i></i><i></i></view>正在整理你的档案…
+    </view>
+
+    <view wx:elif="{{loadError}}" class="loading">
+      <view>{{loadError}}</view>
+      <button class="btn btn--outline btn--sm" style="margin-top: 24rpx;" bindtap="onRetry">再试一次</button>
+    </view>
+
+    <block wx:else>
+      <!-- 统计 -->
+      <view class="stats-grid">
+        <view class="stats-cell">
+          <text class="stats-cell__num">{{stats.chapters}}</text>
+          <text class="stats-cell__label">活动次数</text>
+        </view>
+        <view class="stats-cell">
+          <text class="stats-cell__num">{{stats.totalPhotos}}</text>
+          <text class="stats-cell__label">照片总数</text>
+        </view>
+        <view class="stats-cell">
+          <text class="stats-cell__num">{{stats.publicPhotos}}</text>
+          <text class="stats-cell__label">已公开</text>
+        </view>
+        <view class="stats-cell">
+          <text class="stats-cell__num">{{stats.likesReceived}}</text>
+          <text class="stats-cell__label">收到敬意</text>
+        </view>
+      </view>
+      <view class="stats-foot mono">平均手记分 {{averageScoreLabel}} / 5.0 · 邀请线 3.0</view>
+
+      <!-- 快捷入口 -->
+      <view class="quick-row">
+        <button class="btn btn--signal btn--sm" bindtap="onUpload">放进一张照片</button>
+        <button class="btn btn--outline btn--sm" bindtap="onMyActivities">活动管理</button>
+        <button class="btn btn--outline btn--sm" bindtap="onMyPublicProfile">公开档案</button>
+      </view>
+
+      <!-- 观看中断提醒 -->
+      <view wx:if="{{failedCount > 0}}" class="warn-banner">
+        <text class="mono">INTERRUPTED / 观看中断</text>
+        <p>有 {{failedCount}} 张照片的观看被中断了。回到列表里，可以再看一次。</p>
+      </view>
+
+      <!-- 活动章节 -->
+      <view class="shell" wx:if="{{chapters.length > 0}}">
+        <view class="section-head">
+          <h2 class="serif">活动章节</h2>
+          <text class="mono">CHAPTERS</text>
+        </view>
+        <view class="chapter-list">
+          <view class="chapter-card" wx:for="{{chapters}}" wx:key="index" data-slug="{{item.activity.slug}}" bindtap="onOpenChapter">
+            <view class="chapter-card__head">
+              <text class="badge {{item.activity.phase === 'upcoming' ? 'badge--signal' : ''}}">{{item.activity.phaseLabel}}</text>
+              <text class="mono">{{item.role === 'host' ? '我发起' : '我参与'}}</text>
+            </view>
+            <view class="chapter-card__title serif">{{item.activity.title}}</view>
+            <view class="chapter-card__meta mono">
+              {{item.activity.dateLabel}}{{item.activity.region ? ' · ' + item.activity.region : ''}}
+            </view>
+            <view class="chapter-card__foot">
+              我的 {{item.myPhotoCount}} 张{{item.myPublicCount > 0 ? ' · 已公开 ' + item.myPublicCount : ''}} / 共享相册 {{item.photoCount}} 张
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 照片档案 -->
+      <view class="shell">
+        <view class="section-head">
+          <h2 class="serif">照片档案</h2>
+          <text class="mono">FIELD ROLL</text>
+        </view>
+        <view class="filter-tabs">
+          <view
+            wx:for="{{filters}}"
+            wx:key="id"
+            class="filter-tab {{filter === item.id ? 'is-active' : ''}}"
+            data-id="{{item.id}}"
+            bindtap="onFilter"
+          >{{item.label}} {{counts[item.id] || 0}}</view>
+        </view>
+
+        <view class="photo-list">
+          <view class="photo-row" wx:for="{{filteredPhotos}}" wx:key="id">
+            <image class="photo-row__img" src="{{item.thumb}}" mode="aspectFill" lazy-load data-id="{{item.id}}" bindtap="onOpenPhoto" />
+            <view class="photo-row__body">
+              <view class="photo-row__top">
+                <text class="badge {{item.status === 'accepted' ? '' : item.status === 'rejected' ? 'badge--danger' : item.status === 'failed' ? 'badge--signal' : 'badge--mute'}}">{{item.statusLabel}}</text>
+                <text wx:if="{{item.score !== null}}" class="photo-row__score mono {{item.score < 3 ? 'is-low' : ''}}">{{item.scoreLabel}} / 5</text>
+              </view>
+              <text class="photo-row__title" data-id="{{item.id}}" bindtap="onOpenPhoto">{{item.title || '无题的山野'}}</text>
+              <text class="photo-row__meta">{{item.activity ? '来自《' + item.activity.title + '》' : '单独上传'}} · {{item.themeLabel}} · {{item.dateLabel}}</text>
+              <text wx:if="{{item.summary}}" class="photo-row__summary">{{item.summary}}</text>
+              <view class="photo-row__actions">
+                <text class="text-link" data-id="{{item.id}}" bindtap="onOpenPhoto">查看</text>
+                <text wx:if="{{item.status === 'failed'}}" class="text-link" data-id="{{item.id}}" bindtap="onRetryEvaluate">再看一次</text>
+                <text class="text-link photo-row__delete" data-id="{{item.id}}" bindtap="onDeletePhoto">删除</text>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <empty-state
+          wx:if="{{filteredPhotos.length === 0}}"
+          title="还没有照片"
+          desc="选择一次已加入的活动，把这一趟山野放进档案。"
+          actionText="放进一张照片"
+          actionTab="/pages/upload/upload"
+        />
+      </view>
+
+      <view class="shell">
+        <button class="btn btn--paper btn--full" bindtap="onSignOut">退出登录</button>
+      </view>
+    </block>
+  </block>
+</view>

@@ -1,0 +1,187 @@
+<view class="page">
+  <view wx:if="{{loading}}" class="loading">
+    <view class="loading-dots"><i></i><i></i><i></i></view>正在取出这张照片…
+  </view>
+
+  <view wx:elif="{{loadError}}" class="loading">
+    <view>{{loadError}}</view>
+    <button class="btn btn--outline btn--sm" style="margin-top: 24rpx;" bindtap="onRetry">再试一次</button>
+  </view>
+
+  <block wx:else>
+    <!-- 状态横幅 -->
+    <view wx:if="{{isRejected}}" class="banner banner--rejected">
+      <text class="mono">{{photo.activityId ? 'A LITTLE MORE LIGHT / 这次还差一点' : 'NOT THIS TIME / 这次没有收录'}}</text>
+      <p wx:if="{{photo.activityId}}">这张照片没有通过公共档案的邀请线，但它仍然留在《{{photo.activity.title}}》的相册里，只有同行者能看到。</p>
+      <p wx:else>这张照片没有进入公共档案，也不会被保存。你没有做错什么，只是这一次还没有走到邀请线上。</p>
+    </view>
+    <view wx:if="{{isPending}}" class="banner banner--pending">
+      <text class="mono">IN REVIEW / 正在观看</text>
+      <p>我们还没有看完这张照片。回到工作室可以继续，也可以让它先安静地待着。</p>
+      <button class="btn btn--outline btn--sm" bindtap="onBackStudio">回到工作室</button>
+    </view>
+
+    <!-- 面包屑 -->
+    <view class="crumb">
+      <text>公共档案</text>
+      <text>/</text>
+      <text>{{theme.label}}</text>
+      <text>/</text>
+      <text class="crumb__title">{{photo.title}}</text>
+      <text wx:if="{{isPrivate}}" class="crumb__mark">🔒 仅自己可见</text>
+      <text wx:elif="{{isActivityOnly}}" class="crumb__mark crumb__mark--activity">🔒 仅活动同行可见</text>
+    </view>
+
+    <!-- 大图 -->
+    <view class="viewer" bindtap="onPreview">
+      <image class="viewer__img" src="{{photo.img}}" mode="widthFix" />
+      <view class="viewer__caption">
+        <text>{{theme.label}} · {{theme.latin}}</text>
+        <text class="mono">点击查看原图</text>
+      </view>
+    </view>
+
+    <view class="shell">
+      <p class="photo-caption">
+        {{photo.caption || '这张照片没有留下文字，但画面已经把当时的风说了一些。'}}
+      </p>
+      <view wx:if="{{photo.activity}}" class="photo-activity" bindtap="onOpenActivity">
+        来自活动《{{photo.activity.title}}》 →
+      </view>
+
+      <!-- 观看分 -->
+      <view wx:if="{{canSeeNote}}" class="card score-card">
+        <score-meter score="{{photo.score}}" verdict="{{verdict}}" rejected="{{isRejected}}" />
+      </view>
+
+      <!-- 标题与标签 -->
+      <h1 class="photo-title serif">{{photo.title}}</h1>
+      <view class="photo-themes">
+        <view class="chip">
+          <view class="chip-dot" style="background: {{theme.color}}"></view>
+          {{theme.label}}
+          <text class="mono">{{theme.latin}}</text>
+        </view>
+        <text wx:for="{{photo.tags}}" wx:if="{{index < 3}}" wx:key="*this" class="tag">{{item}}</text>
+      </view>
+
+      <!-- 无手记说明 -->
+      <view wx:if="{{!canSeeNote}}" class="shared-note">
+        <text class="mono">SHARED IN A FIELD ROLL</text>
+        <p>
+          {{isOwner
+            ? '这张照片还没有请山野看过。想公开到公共档案时，再点下面的按钮；在那之前，它只留在这次活动里。'
+            : '这张照片来自一次同行。观看手记与分数只对拍摄者本人可见；想公开到公共档案，也由拍摄者自己决定。'}}
+        </p>
+      </view>
+
+      <!-- 手记引言 -->
+      <view wx:if="{{canSeeNote && photo.summary}}" class="quote">
+        <text class="quote__mark serif">“</text>
+        <p class="serif">{{photo.summary}}</p>
+      </view>
+
+      <!-- 公开按钮 -->
+      <button
+        wx:if="{{isOwner && photo.activityId}}"
+        class="btn btn--signal btn--full publish-btn {{publishSubmitting ? 'btn--disabled' : ''}}"
+        bindtap="onPublish"
+      >
+        {{photo.visibility === 'public' ? '收回公开，只给同行看' : '请山野看看，放进公共档案'}}
+      </button>
+
+      <!-- 作者 -->
+      <view class="author-row" bindtap="onOpenAuthor">
+        <view class="author-row__avatar">{{photo.author.name[0] || '山'}}</view>
+        <view class="author-row__info">
+          <text class="author-row__name serif">{{photo.author.name}}</text>
+          <text class="mono">@{{photo.author.username}}{{photo.author.homeBase ? ' · ' + photo.author.homeBase : ''}}</text>
+        </view>
+        <text class="author-row__arrow">→</text>
+      </view>
+
+      <!-- 点赞 -->
+      <view wx:if="{{viewer.canLike}}" class="like-row">
+        <button
+          class="like-btn {{liked ? 'is-liked' : ''}}"
+          bindtap="onLike"
+        >
+          <view class="like-btn__heart"></view>
+          <text>{{likeCount}} 次敬意</text>
+        </button>
+        <text class="like-row__hint">同行者可以给这张照片留下敬意。</text>
+      </view>
+      <view wx:elif="{{photo.activityId && photo.status === 'accepted'}}" class="like-row like-row--note">
+        <text class="like-row__count">{{likeCount}} 次敬意</text>
+        <text class="like-row__hint" bindtap="onLoginForLike">
+          {{isOwner ? '同行者可以给这张照片留下敬意。' : '只有这次活动的同行者，才能留下敬意。'}}
+        </text>
+      </view>
+
+      <!-- 元数据 -->
+      <view class="meta-grid">
+        <view class="meta-item" wx:for="{{metaList}}" wx:key="label">
+          <text class="meta-item__label">{{item.label}}</text>
+          <text class="meta-item__value">{{item.value}}</text>
+        </view>
+      </view>
+
+      <!-- 删除 -->
+      <view wx:if="{{isOwner}}" class="owner-actions">
+        <button class="btn btn--paper btn--sm" bindtap="onDelete">删除这张照片</button>
+      </view>
+
+      <!-- 观看手记 -->
+      <view wx:if="{{canSeeNote}}" class="judgement">
+        <view class="judgement__head">
+          <view class="eyebrow"><view class="dot"></view>THE EDITOR'S NOTE / 观看手记</view>
+          <text class="mono">{{photo.aiProvider === 'archive-editor' ? '编辑预置手记' : (photo.aiProvider || '视觉模型') + ' · ' + (photo.aiModel || '')}}</text>
+        </view>
+        <h2 class="serif judgement__title">
+          {{isRejected ? '这次没有进入公共档案。但这一趟没有白拍。' : '这张照片，为什么打动了我们。'}}
+        </h2>
+        <view class="judgement__list">
+          <view class="judgement__list-head">
+            <text class="mono">01</text>
+            <text>{{isRejected ? '它依然好的地方' : '它打动人的地方'}}</text>
+            <text class="mono">WHAT WORKS</text>
+          </view>
+          <view class="judgement__item" wx:for="{{photo.strengths}}" wx:key="*this">
+            <text class="judgement__index">{{index + 1 < 10 ? '0' : ''}}{{index + 1}}</text>
+            <text>{{item}}</text>
+          </view>
+          <view wx:if="{{photo.strengths.length === 0}}" class="judgement__item">
+            <text class="judgement__index">01</text>
+            <text>这一次，画面还没有把它的理由说清楚。</text>
+          </view>
+        </view>
+        <view class="judgement__list judgement__list--next">
+          <view class="judgement__list-head">
+            <text class="mono">02</text>
+            <text>{{isRejected ? '下一次，可以试试' : '下一次，可以更好'}}</text>
+            <text class="mono">{{isRejected ? 'NEXT TIME' : 'NEXT FRAME'}}</text>
+          </view>
+          <view class="judgement__item" wx:for="{{photo.improvements}}" wx:key="*this">
+            <text class="judgement__index">{{index + 1 < 10 ? '0' : ''}}{{index + 1}}</text>
+            <text>{{item}}</text>
+          </view>
+          <view wx:if="{{photo.improvements.length === 0}}" class="judgement__item">
+            <text class="judgement__index">01</text>
+            <text>慢慢来，下一张会更好。</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 相关照片 -->
+      <view wx:if="{{related.length > 0}}" class="related">
+        <view class="section-head">
+          <h2 class="serif">同一片山野的其它照片</h2>
+          <text class="mono">CONTINUE</text>
+        </view>
+        <view class="grid-2">
+          <photo-tile wx:for="{{related}}" wx:key="id" photo="{{item}}" />
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

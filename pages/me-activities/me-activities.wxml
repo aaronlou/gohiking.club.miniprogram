@@ -1,0 +1,92 @@
+<view class="page">
+  <view wx:if="{{loading}}" class="loading">
+    <view class="loading-dots"><i></i><i></i><i></i></view>正在清点活动…
+  </view>
+
+  <view wx:elif="{{loadError}}" class="loading">
+    <view>{{loadError}}</view>
+    <button class="btn btn--outline btn--sm" style="margin-top: 24rpx;" bindtap="onRetry">再试一次</button>
+  </view>
+
+  <block wx:else>
+    <!-- 入队申请 -->
+    <view class="section" wx:if="{{pendingRequests.length > 0}}">
+      <view class="section-head">
+        <h2 class="serif">入队申请</h2>
+        <text class="mono">{{pendingRequests.length}} 份</text>
+      </view>
+      <view
+        class="request-row"
+        wx:for="{{pendingRequests}}"
+        wx:key="member.id"
+        data-slug="{{item.activity.slug}}"
+        bindtap="onManage"
+      >
+        <view class="request-row__avatar">{{item.member.user.name[0] || '山'}}</view>
+        <view class="request-row__body">
+          <text class="request-row__title">{{item.member.user.name}} 申请加入《{{item.activity.title}}》</text>
+          <text class="request-row__meta mono">{{item.member.appliedAt}}</text>
+        </view>
+        <text class="request-row__cta">去确认 →</text>
+      </view>
+    </view>
+
+    <!-- 我发起的 -->
+    <view class="section">
+      <view class="section-head">
+        <h2 class="serif">我发起的</h2>
+        <text class="mono">HOSTED · {{hosted.length}}</text>
+      </view>
+      <block wx:if="{{hosted.length > 0}}">
+        <view class="activity-card" wx:for="{{hosted}}" wx:key="id">
+          <view class="activity-card__head" data-slug="{{item.slug}}" bindtap="onOpen">
+            <text class="badge {{item.phase === 'upcoming' ? 'badge--signal' : ''}}">{{item.phaseLabel}}</text>
+            <text class="mono">{{item.dateLabel}}</text>
+          </view>
+          <view class="activity-card__title serif" data-slug="{{item.slug}}" bindtap="onOpen">{{item.title}}</view>
+          <view class="activity-card__meta">
+            <text>同行 {{item.memberCount}} 人</text>
+            <text>影像 {{item.photoCount}} 张</text>
+            <text wx:if="{{item.pendingCount > 0}}" class="activity-card__pending">{{item.pendingCount}} 份待确认</text>
+          </view>
+          <view class="activity-card__actions">
+            <button class="btn btn--outline btn--sm" data-slug="{{item.slug}}" bindtap="onManage">管理</button>
+            <button class="btn btn--paper btn--sm" data-slug="{{item.slug}}" bindtap="onOpen">打开</button>
+          </view>
+        </view>
+      </block>
+      <view wx:else class="card quiet-card">
+        还没有发起过活动。
+        <text class="text-link" bindtap="onNew">发起一次 →</text>
+      </view>
+    </view>
+
+    <!-- 我参与的 -->
+    <view class="section">
+      <view class="section-head">
+        <h2 class="serif">我参与的</h2>
+        <text class="mono">JOINED · {{joined.length}}</text>
+      </view>
+      <block wx:if="{{joined.length > 0}}">
+        <view class="activity-card" wx:for="{{joined}}" wx:key="id" data-slug="{{item.slug}}" bindtap="onOpen">
+          <view class="activity-card__head">
+            <text class="badge {{item.phase === 'upcoming' ? 'badge--signal' : ''}}">{{item.phaseLabel}}</text>
+            <text class="mono">{{item.dateLabel}}</text>
+          </view>
+          <view class="activity-card__title serif">{{item.title}}</view>
+          <view class="activity-card__meta">
+            <text>发起 · {{item.host.name}}</text>
+            <text>影像 {{item.photoCount}} 张</text>
+          </view>
+        </view>
+      </block>
+      <view wx:else class="card quiet-card">
+        还没有加入过别人的活动。去活动页看看正在招募的同行。
+      </view>
+    </view>
+
+    <view class="section">
+      <button class="btn btn--signal btn--full" bindtap="onNew">发起一次活动</button>
+    </view>
+  </block>
+</view>

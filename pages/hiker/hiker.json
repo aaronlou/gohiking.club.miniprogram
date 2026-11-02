@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "徒步者档案",
+  "usingComponents": {
+    "photo-tile": "/components/photo-tile/photo-tile",
+    "empty-state": "/components/empty-state/empty-state"
+  }
+}

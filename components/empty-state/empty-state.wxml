@@ -1,0 +1,6 @@
+<view class="empty">
+  <view class="empty__mark"></view>
+  <h3 class="empty__title">{{title}}</h3>
+  <p wx:if="{{desc}}" class="empty__desc">{{desc}}</p>
+  <button wx:if="{{actionText && (actionTab || actionUrl)}}" class="btn btn--outline btn--sm empty__btn" bindtap="onAction">{{actionText}}</button>
+</view>

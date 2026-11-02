@@ -1,0 +1,135 @@
+<view class="page">
+  <view class="hero-quiet">
+    <view class="shell">
+      <view class="eyebrow"><view class="dot"></view>PUBLIC ARCHIVE / 公共档案</view>
+      <h1 class="serif">被公开的精选</h1>
+      <view class="hero-quiet__stats mono">
+        <text>{{total}} 张照片 · 邀请线 3.0 · 满分 5.0</text>
+      </view>
+    </view>
+    <view class="view-tabs">
+      <view
+        wx:for="{{views}}"
+        wx:key="id"
+        class="view-tab {{view === item.id ? 'is-active' : ''}}"
+        data-id="{{item.id}}"
+        bindtap="onSwitchView"
+      >{{item.label}}</view>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading">
+    <view class="loading-dots"><i></i><i></i><i></i></view>正在打开档案柜…
+  </view>
+
+  <view wx:elif="{{loadError}}" class="loading">
+    <view>{{loadError}}</view>
+    <button class="btn btn--outline btn--sm" style="margin-top: 24rpx;" bindtap="onRetry">再试一次</button>
+  </view>
+
+  <block wx:else>
+    <!-- 主题筛选 chips -->
+    <scroll-view wx:if="{{view === 'theme'}}" class="filter-bar" scroll-x enhanced show-scrollbar="{{false}}">
+      <view class="filter-bar__inner">
+        <view
+          wx:for="{{themes}}"
+          wx:key="id"
+          class="chip {{themeFilter === item.id ? 'chip--active' : ''}}"
+          data-id="{{item.id}}"
+          bindtap="onThemeFilter"
+        >
+          <view class="chip-dot" style="background: {{item.color}}"></view>
+          {{item.label}}
+        </view>
+        <view wx:if="{{themeFilter}}" class="chip chip--active" bindtap="onClearFilter">清除筛选 ×</view>
+      </view>
+    </scroll-view>
+
+    <!-- 按主题 -->
+    <block wx:if="{{view === 'theme'}}">
+      <view class="shell" wx:for="{{filteredThemeGroups}}" wx:key="id" wx:for-item="group" wx:for-index="gIndex">
+        <view class="group-head">
+          <view class="group-head__title">
+            <view class="group-dot" style="background: {{group.color}}"></view>
+            <text class="serif group-name">{{group.label}}</text>
+            <text class="mono">{{group.latin}}</text>
+          </view>
+          <text class="mono">{{group.photos.length}} 张</text>
+        </view>
+        <p class="group-note">{{group.note}}</p>
+        <view class="grid-2">
+          <photo-tile wx:for="{{group.photos}}" wx:key="id" photo="{{item}}" />
+        </view>
+      </view>
+      <empty-state
+        wx:if="{{filteredThemeGroups.length === 0}}"
+        title="档案柜的这一格还空着"
+        desc="换一个主题看看，或者去山野里拍一张回来。"
+        actionText="回到山野"
+        actionTab="/pages/home/home"
+      />
+    </block>
+
+    <!-- 按时间 -->
+    <block wx:if="{{view === 'date'}}">
+      <view class="shell" wx:for="{{monthGroups}}" wx:key="key" wx:for-item="group">
+        <view class="group-head">
+          <view class="group-head__title">
+            <text class="serif group-name">{{group.label}}</text>
+            <text class="mono">{{group.latin}}</text>
+          </view>
+          <text class="mono">{{group.photos.length}} 张</text>
+        </view>
+        <view class="grid-2">
+          <photo-tile wx:for="{{group.photos}}" wx:key="id" photo="{{item}}" />
+        </view>
+      </view>
+      <empty-state
+        wx:if="{{monthGroups.length === 0}}"
+        title="档案里还没有照片"
+        desc="第一张照片还在山里，等它被带回来。"
+        actionText="回到山野"
+        actionTab="/pages/home/home"
+      />
+    </block>
+
+    <!-- 按摄影师 -->
+    <block wx:if="{{view === 'author'}}">
+      <view class="shell" wx:for="{{authorGroups}}" wx:key="id" wx:for-item="group">
+        <view class="author-card">
+          <view class="author-card__head">
+            <view class="avatar">{{group.name[0] || '山'}}</view>
+            <view class="author-card__info">
+              <text class="author-card__name serif">{{group.name}}</text>
+              <text class="mono">@{{group.username}}{{group.homeBase ? ' · ' + group.homeBase : ''}}</text>
+            </view>
+            <view class="author-card__stats">
+              <text>{{group.photos.length}} 张</text>
+              <text>平均 {{group.averageScoreLabel}}</text>
+            </view>
+          </view>
+          <view class="author-card__thumbs">
+            <image
+              wx:for="{{group.photos}}"
+              wx:key="id"
+              wx:if="{{index < 4}}"
+              class="author-card__thumb"
+              src="{{item.thumb}}"
+              mode="aspectFill"
+              lazy-load
+              data-id="{{item.id}}"
+              bindtap="onPhotoTap"
+            />
+          </view>
+        </view>
+      </view>
+      <empty-state
+        wx:if="{{authorGroups.length === 0}}"
+        title="还没有摄影师"
+        desc="第一张被公开的照片，会写下第一个名字。"
+        actionText="回到山野"
+        actionTab="/pages/home/home"
+      />
+    </block>
+  </block>
+</view>

@@ -1,0 +1,92 @@
+<view class="page">
+  <view wx:if="{{loading}}" class="loading">
+    <view class="loading-dots"><i></i><i></i><i></i></view>正在打开工作台…
+  </view>
+
+  <view wx:elif="{{loadError}}" class="loading">
+    <view>{{loadError}}</view>
+    <button class="btn btn--outline btn--sm" style="margin-top: 24rpx;" bindtap="onRetry">再试一次</button>
+  </view>
+
+  <block wx:else>
+    <view class="head">
+      <view class="eyebrow"><view class="dot"></view>HOST DESK / 发起人工作台</view>
+      <h1 class="serif head__title">{{activity.title}}</h1>
+      <view class="head__row">
+        <text class="badge {{activity.status === 'open' ? 'badge--signal' : 'badge--mute'}}">
+          {{activity.status === 'open' ? '报名进行中' : '报名已结束'}}
+        </text>
+        <text class="mono">{{members.length}} 位成员 · {{requests.length}} 份待确认</text>
+      </view>
+      <button class="btn btn--outline btn--sm" bindtap="onToggleStatus">
+        {{activity.status === 'open' ? '结束报名' : '重新开放报名'}}
+      </button>
+    </view>
+
+    <!-- 入队申请 -->
+    <view class="section">
+      <view class="section-head">
+        <h2 class="serif">入队申请</h2>
+        <text class="mono">{{requests.length}} 份</text>
+      </view>
+      <block wx:if="{{requests.length > 0}}">
+        <view class="request-card" wx:for="{{requests}}" wx:key="id">
+          <view class="request-card__head" data-username="{{item.user.username}}" bindtap="onOpenMember">
+            <view class="request-card__avatar">{{item.user.name[0] || '山'}}</view>
+            <view class="request-card__info">
+              <text class="request-card__name">{{item.user.name}}</text>
+              <text class="mono">@{{item.user.username}}{{item.user.homeBase ? ' · ' + item.user.homeBase : ''}}</text>
+            </view>
+          </view>
+          <text wx:if="{{item.user.bio}}" class="request-card__bio">{{item.user.bio}}</text>
+          <view wx:if="{{item.note}}" class="request-card__note">
+            <text>“{{item.note}}”</text>
+          </view>
+          <view class="request-card__actions">
+            <button class="btn btn--ink btn--sm" data-id="{{item.id}}" bindtap="onApprove">通过</button>
+            <button class="btn btn--outline btn--sm" data-id="{{item.id}}" bindtap="onReject">婉拒</button>
+          </view>
+        </view>
+      </block>
+      <view wx:else class="card quiet-card">暂时没有新的申请。</view>
+    </view>
+
+    <!-- 直接邀请 -->
+    <view class="section">
+      <view class="section-head">
+        <h2 class="serif">直接邀请</h2>
+        <text class="mono">INVITE</text>
+      </view>
+      <view class="invite-row">
+        <input class="input invite-input" value="{{inviteUsername}}" bindinput="onInviteInput" placeholder="输入用户名" placeholder-class="ph" />
+        <button class="btn btn--signal btn--sm invite-btn {{submitting ? 'btn--disabled' : ''}}" bindtap="onInvite">邀请</button>
+      </view>
+      <text class="form-help">被邀请的人会直接加入，不需要确认。</text>
+    </view>
+
+    <!-- 成员 -->
+    <view class="section">
+      <view class="section-head">
+        <h2 class="serif">成员</h2>
+        <text class="mono">{{members.length}} 人</text>
+      </view>
+      <view class="member-item" wx:for="{{members}}" wx:key="id">
+        <view class="member-item__main" data-username="{{item.user.username}}" bindtap="onOpenMember">
+          <view class="member-item__avatar">{{item.user.name[0] || '山'}}</view>
+          <view class="member-item__info">
+            <text>{{item.user.name}}</text>
+            <text class="mono">@{{item.user.username}}</text>
+          </view>
+          <text wx:if="{{item.role === 'host'}}" class="badge">发起人</text>
+        </view>
+        <button
+          wx:if="{{item.role !== 'host'}}"
+          class="btn btn--paper btn--sm member-item__remove"
+          data-id="{{item.id}}"
+          data-name="{{item.user.name}}"
+          bindtap="onRemove"
+        >移出</button>
+      </view>
+    </view>
+  </block>
+</view>

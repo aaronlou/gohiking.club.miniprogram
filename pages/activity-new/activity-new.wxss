@@ -1,0 +1,38 @@
+.page {
+  padding: 48rpx 40rpx 120rpx;
+}
+
+.head__title {
+  font-size: 48rpx;
+  color: var(--forest);
+  margin: 20rpx 0 16rpx;
+}
+
+.head__desc {
+  font-size: 26rpx;
+  color: var(--ink-mute);
+  line-height: 1.8;
+  margin-bottom: 40rpx;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.advanced {
+  padding: 28rpx;
+  margin: 8rpx 0 36rpx;
+  background: var(--paper-light);
+  border: 1rpx dashed var(--line-strong);
+  border-radius: var(--radius);
+}
+
+.picker-view {
+  display: flex;
+  align-items: center;
+}
+
+.ph {
+  color: var(--sage);
+}

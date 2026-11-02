@@ -1,0 +1,20 @@
+<view class="tile" wx:if="{{photo}}" bindtap="onTap">
+  <view class="tile__frame">
+    <image class="tile__img" src="{{photo.thumb}}" mode="aspectFill" lazy-load="{{true}}" />
+    <view class="tile__theme" style="background: {{photo.themeColor}}">
+      {{photo.themeLabel}}
+    </view>
+    <view wx:if="{{photo.visibility === 'public'}}" class="tile__flag">公开</view>
+  </view>
+  <view class="tile__body">
+    <text class="tile__title">{{photo.title || '无题的山野'}}</text>
+    <view class="tile__meta">
+      <text wx:if="{{showAuthor}}" class="tile__author">{{photo.author.name}}</text>
+      <text class="tile__date">{{photo.dateLabel}}</text>
+      <view wx:if="{{showLike && photo.likeCount > 0}}" class="tile__likes">
+        <view class="tile__heart"></view>
+        <text>{{photo.likeCount}}</text>
+      </view>
+    </view>
+  </view>
+</view>

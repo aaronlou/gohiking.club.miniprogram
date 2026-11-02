@@ -1,0 +1,82 @@
+.meter-block__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16rpx;
+}
+
+.meter-block__verdict {
+  font-size: 24rpx;
+  color: #475847;
+  font-weight: 600;
+}
+
+.meter-block__verdict.is-rejected {
+  color: #a73a25;
+}
+
+.meter-block__number {
+  display: flex;
+  align-items: baseline;
+  gap: 10rpx;
+}
+
+.meter-block__number .score {
+  font-size: 72rpx;
+  font-weight: 600;
+  font-family: Georgia, "Songti SC", serif;
+  color: #1b211a;
+  line-height: 1.1;
+}
+
+.meter-block__number .total {
+  font-size: 26rpx;
+  color: #5f665a;
+}
+
+.meter-block__bar {
+  position: relative;
+  height: 12rpx;
+  background: rgba(27, 33, 26, 0.1);
+  margin: 20rpx 0 10rpx;
+  border-radius: 2rpx;
+  overflow: hidden;
+}
+
+.meter-block__bar .fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: #81907a;
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.meter-block__bar .fill.is-pass {
+  background: #475847;
+}
+
+.meter-block__bar .mark {
+  position: absolute;
+  left: 60%;
+  top: -4rpx;
+  bottom: -4rpx;
+  width: 2rpx;
+  background: #df5a34;
+}
+
+.meter-block__legend {
+  display: flex;
+  justify-content: space-between;
+  font-size: 20rpx;
+  color: #5f665a;
+  font-family: Menlo, monospace;
+}
+
+.mono {
+  font-size: 20rpx;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-family: Menlo, monospace;
+  color: #5f665a;
+}

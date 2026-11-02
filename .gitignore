@@ -1,0 +1,9 @@
+# macOS
+.DS_Store
+
+# 微信开发者工具本地私有配置（含个人 appid/编译设置）
+project.private.config.json
+
+# 依赖与构建
+node_modules/
+miniprogram_npm/

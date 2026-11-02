@@ -1,0 +1,58 @@
+<view class="page">
+  <view wx:if="{{loading}}" class="loading">
+    <view class="loading-dots"><i></i><i></i><i></i></view>正在翻开这本档案…
+  </view>
+
+  <view wx:elif="{{loadError}}" class="loading">
+    <view>{{loadError}}</view>
+    <button class="btn btn--outline btn--sm" style="margin-top: 24rpx;" bindtap="onRetry">再试一次</button>
+  </view>
+
+  <block wx:else>
+    <view class="hero">
+      <view class="hero__avatar">{{profile.name[0] || '山'}}</view>
+      <view class="hero__info">
+        <text class="mono">@{{profile.username}}{{profile.homeBase ? ' · ' + profile.homeBase : ''}}</text>
+        <h1 class="serif hero__name">{{profile.name}}</h1>
+      </view>
+      <p class="hero__bio">{{profile.bio || '还没有写下自己的介绍。'}}</p>
+      <view class="hero__stats">
+        <view class="hero-stat">
+          <text class="hero-stat__num">{{stats.accepted}}</text>
+          <text class="hero-stat__label">张被看见</text>
+        </view>
+        <view class="hero-stat">
+          <text class="hero-stat__num">{{averageScoreLabel}}</text>
+          <text class="hero-stat__label">平均评分</text>
+        </view>
+        <view class="hero-stat">
+          <text class="hero-stat__num">{{stats.likes}}</text>
+          <text class="hero-stat__label">收到敬意</text>
+        </view>
+      </view>
+      <text class="hero__since mono">FIELD MEMBER SINCE {{memberSince}}</text>
+      <view class="hero__actions">
+        <button wx:if="{{isOwner}}" class="btn btn--signal btn--sm" bindtap="onUpload">放进一张照片</button>
+        <button wx:if="{{isOwner}}" class="btn btn--outline btn--sm" bindtap="onGoStudio">进入工作室</button>
+        <button wx:else class="btn btn--outline btn--sm" bindtap="onGoArchive">浏览所有摄影师</button>
+      </view>
+    </view>
+
+    <view class="shell">
+      <view class="section-head">
+        <h2 class="serif">公开的作品</h2>
+        <text class="mono">{{photos.length}} 张</text>
+      </view>
+      <view class="grid-2" wx:if="{{photos.length > 0}}">
+        <photo-tile wx:for="{{photos}}" wx:key="id" photo="{{item}}" showAuthor="{{false}}" />
+      </view>
+      <empty-state
+        wx:if="{{photos.length === 0}}"
+        title="{{isOwner ? '还没有公开的照片' : '还没有公开的作品'}}"
+        desc="{{isOwner ? '在照片页点「放进公共档案」，由你自己决定哪一张与大家见面。' : '这位徒步者的照片，还没有放进公共档案。'}}"
+        actionText="{{isOwner ? '放进一张照片' : ''}}"
+        actionTab="{{isOwner ? '/pages/upload/upload' : ''}}"
+      />
+    </view>
+  </block>
+</view>

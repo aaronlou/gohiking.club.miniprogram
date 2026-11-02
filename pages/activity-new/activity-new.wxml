@@ -1,0 +1,85 @@
+<view class="page">
+  <view class="head">
+    <view class="eyebrow"><view class="dot"></view>NEW WALK / 发起一次同行</view>
+    <h1 class="serif head__title">这次活动叫什么？</h1>
+    <p class="head__desc">一次徒步属于一群人。发起后，你自动成为发起人；其他人申请加入，由你确认。</p>
+  </view>
+
+  <view class="form">
+    <view class="field">
+      <text class="field__label required">活动名称</text>
+      <input class="input" value="{{title}}" bindinput="onTitle" placeholder="例如：武功山金顶看日出" placeholder-class="ph" maxlength="80" />
+    </view>
+
+    <view class="field">
+      <text class="field__label required">出发日期</text>
+      <picker mode="date" value="{{startDate}}" start="{{today}}" bindchange="onStartDate">
+        <view class="input picker-view">{{startDate || '选择日期'}}</view>
+      </picker>
+    </view>
+
+    <view class="field">
+      <text class="field__label">结束日期（可选，多日活动填写）</text>
+      <picker mode="date" value="{{endDate}}" start="{{startDate || today}}" bindchange="onEndDate">
+        <view class="input picker-view">{{endDate || '选择日期'}}</view>
+      </picker>
+    </view>
+
+    <view class="field">
+      <text class="field__label">一句话介绍</text>
+      <input class="input" value="{{summary}}" bindinput="onSummary" placeholder="这次同行要去哪里，看什么" placeholder-class="ph" maxlength="140" />
+    </view>
+
+    <view class="field">
+      <text class="field__label">地区（可选）</text>
+      <input class="input" value="{{region}}" bindinput="onRegion" placeholder="例如：江西 · 萍乡" placeholder-class="ph" maxlength="40" />
+    </view>
+
+    <view class="field">
+      <text class="field__label">路线（可选）</text>
+      <input class="input" value="{{routeName}}" bindinput="onRoute" placeholder="例如：沈子村 — 金顶 — 发云界" placeholder-class="ph" maxlength="60" />
+    </view>
+
+    <view class="field">
+      <text class="field__label">强度</text>
+      <picker range="{{difficulties}}" range-key="label" value="{{difficultyIndex}}" bindchange="onDifficulty">
+        <view class="input picker-view">{{difficulties[difficultyIndex].label}} · {{difficulties[difficultyIndex].note}}</view>
+      </picker>
+    </view>
+
+    <view class="field">
+      <text class="field__label">名额上限（可选，不填不限）</text>
+      <input class="input" type="number" value="{{capacity}}" bindinput="onCapacity" placeholder="1 - 100" placeholder-class="ph" />
+    </view>
+
+    <view class="field">
+      <text class="field__label">加入方式</text>
+      <picker range="{{joinPolicies}}" range-key="label" value="{{joinPolicyIndex}}" bindchange="onJoinPolicy">
+        <view class="input picker-view">{{joinPolicies[joinPolicyIndex].label}}</view>
+      </picker>
+    </view>
+
+    <view class="field">
+      <text class="field__label">可见性</text>
+      <picker range="{{visibilities}}" range-key="label" value="{{visibilityIndex}}" bindchange="onVisibility">
+        <view class="input picker-view">{{visibilities[visibilityIndex].label}} · {{visibilities[visibilityIndex].note}}</view>
+      </picker>
+    </view>
+
+    <view class="advanced">
+      <text class="mono">更多设置（仅成员可见）</text>
+      <view class="field" style="margin-top: 20rpx;">
+        <text class="field__label">集合点（≤120 字）</text>
+        <input class="input" value="{{meetingPoint}}" bindinput="onMeetingPoint" placeholder="通过申请的成员才能看到" placeholder-class="ph" maxlength="120" />
+      </view>
+      <view class="field">
+        <text class="field__label">活动说明（≤2000 字）</text>
+        <textarea class="textarea" value="{{description}}" bindinput="onDescription" placeholder="行程安排、装备建议、注意事项…" placeholder-class="ph" maxlength="2000" />
+      </view>
+    </view>
+
+    <button class="btn btn--signal btn--full {{submitting ? 'btn--disabled' : ''}}" bindtap="onSubmit" disabled="{{submitting}}">
+      {{submitting ? '正在建立…' : '建立这次活动'}}
+    </button>
+  </view>
+</view>

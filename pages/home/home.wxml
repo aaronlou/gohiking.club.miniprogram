@@ -1,0 +1,139 @@
+<view class="page">
+  <!-- Hero -->
+  <view class="hero">
+    <view class="hero__contour"></view>
+    <view class="shell">
+      <view class="eyebrow"><view class="dot"></view>FIELD ARCHIVE / 山行档案</view>
+      <view class="hero__title serif">山行档案</view>
+      <view class="hero__latin mono">{{site.latin}}</view>
+      <p class="hero__tagline">{{site.tagline}}</p>
+
+      <view class="hero__stats">
+        <view class="stat">
+          <text class="stat__num">{{stats.accepted}}</text>
+          <text class="stat__label">公共影像</text>
+        </view>
+        <view class="stat">
+          <text class="stat__num">{{stats.photographers}}</text>
+          <text class="stat__label">同行摄影师</text>
+        </view>
+        <view class="stat">
+          <text class="stat__num">{{averageScoreLabel}}</text>
+          <text class="stat__label">平均手记分</text>
+        </view>
+        <view class="stat">
+          <text class="stat__num serif">看</text>
+          <text class="stat__label">{{providerLabel || '认真观看'}}</text>
+        </view>
+      </view>
+
+      <view class="hero__actions">
+        <button class="btn btn--signal hero__cta" bindtap="onUpload">放进一张照片</button>
+        <button class="btn btn--outline" bindtap="onGoArchive">去看看公共档案</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 跑马灯 -->
+  <view class="ticker">
+    <view class="ticker__track">
+      <text wx:for="{{['光影','构图','叙事','山野','被看见','真诚','光影','构图','叙事','山野','被看见','真诚']}}" wx:key="index">{{item}}</text>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading">
+    <view class="loading-dots"><i></i><i></i><i></i></view>正在走进山野…
+  </view>
+
+  <view wx:elif="{{loadError}}" class="loading">
+    <view>{{loadError}}</view>
+    <button class="btn btn--outline btn--sm" style="margin-top: 24rpx;" bindtap="onRetry">再试一次</button>
+  </view>
+
+  <block wx:else>
+    <!-- 本期山脊 -->
+    <view class="shell" wx:if="{{thisWeek.length > 0}}">
+      <view class="section-head">
+        <h2 class="serif">本期山脊</h2>
+        <text class="mono">THIS WEEK</text>
+      </view>
+      <scroll-view class="week-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+        <view class="week-scroll__inner">
+          <view class="week-card" wx:for="{{thisWeek}}" wx:key="id" data-id="{{item.id}}" bindtap="onPhotoTap">
+            <image class="week-card__img" src="{{item.thumb}}" mode="aspectFill" lazy-load />
+            <view class="week-card__caption">
+              <text class="week-card__title">{{item.title || '无题'}}</text>
+              <text class="week-card__meta">{{item.themeLabel}} · {{item.scoreLabel}} 分</text>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+
+      <view class="theme-chips">
+        <view
+          wx:for="{{themes}}"
+          wx:key="id"
+          class="chip"
+          data-id="{{item.id}}"
+          bindtap="onThemeChip"
+        >
+          <view class="chip-dot" style="background: {{item.color}}"></view>
+          {{item.label}}
+        </view>
+      </view>
+    </view>
+
+    <!-- 精选照片 -->
+    <view class="shell" wx:if="{{featured.length > 0}}">
+      <view class="section-head">
+        <h2 class="serif">被认真看见的照片</h2>
+        <text class="mono">FEATURED</text>
+      </view>
+      <view class="grid-2">
+        <photo-tile wx:for="{{featured}}" wx:key="id" photo="{{item}}" />
+      </view>
+    </view>
+
+    <empty-state
+      wx:if="{{featured.length === 0 && thisWeek.length === 0}}"
+      title="正在等第一张山野"
+      desc="这里还没有照片。发起一次活动，或者把第一张山野放进档案。"
+      actionText="放进一张照片"
+      actionTab="/pages/upload/upload"
+    />
+
+    <!-- 我们如何观看 -->
+    <view class="shell">
+      <view class="section-head">
+        <h2 class="serif">我们如何观看</h2>
+        <text class="mono">HOW WE LOOK</text>
+      </view>
+      <view class="card rubric-scale">
+        <view class="rubric-scale__bar">
+          <view class="rubric-scale__fill"></view>
+          <view class="rubric-scale__mark">
+            <text>邀请线 3.0</text>
+          </view>
+        </view>
+        <view class="rubric-scale__legend">
+          <text>1.0</text>
+          <text>3.0 公共档案</text>
+          <text>5.0</text>
+        </view>
+      </view>
+      <view class="rubric-list">
+        <view class="rubric-item" wx:for="{{rubric}}" wx:key="index">
+          <text class="rubric-item__index mono">{{item.index}}</text>
+          <view class="rubric-item__body">
+            <view class="rubric-item__title">{{item.title}}<text class="mono">{{item.latin}}</text></view>
+            <p>{{item.description}}</p>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <view class="footer">
+    <text class="mono">{{site.latin}} · 浙ICP备2024126456号-4</text>
+  </view>
+</view>

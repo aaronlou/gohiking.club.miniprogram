@@ -1,0 +1,41 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/activities/activities",
+    "pages/upload/upload",
+    "pages/archive/archive",
+    "pages/me/me",
+    "pages/login/login",
+    "pages/photo/photo",
+    "pages/activity/activity",
+    "pages/activity-new/activity-new",
+    "pages/activity-manage/activity-manage",
+    "pages/me-activities/me-activities",
+    "pages/profile/profile",
+    "pages/hiker/hiker"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#f3eee3",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "山行档案",
+    "backgroundColor": "#f3eee3",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#5f665a",
+    "selectedColor": "#202b22",
+    "backgroundColor": "#fbf8f1",
+    "borderStyle": "black",
+    "list": [
+      { "pagePath": "pages/home/home", "text": "山野" },
+      { "pagePath": "pages/activities/activities", "text": "活动" },
+      { "pagePath": "pages/upload/upload", "text": "放进" },
+      { "pagePath": "pages/archive/archive", "text": "档案" },
+      { "pagePath": "pages/me/me", "text": "我的" }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

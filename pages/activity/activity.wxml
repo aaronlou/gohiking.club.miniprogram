@@ -1,0 +1,155 @@
+<view class="page">
+  <view wx:if="{{loading}}" class="loading">
+    <view class="loading-dots"><i></i><i></i><i></i></view>正在前往集合点…
+  </view>
+
+  <view wx:elif="{{loadError}}" class="loading">
+    <view>{{loadError}}</view>
+    <button class="btn btn--outline btn--sm" style="margin-top: 24rpx;" bindtap="onRetry">再试一次</button>
+  </view>
+
+  <block wx:else>
+    <!-- Hero -->
+    <view class="hero">
+      <view class="hero__cover" style="background: {{activity.coverColor || '#202b22'}}"></view>
+      <view class="shell">
+        <view class="hero__badges">
+          <text class="badge {{activity.status === 'open' ? 'badge--signal' : 'badge--mute'}}">{{phaseLabel}}</text>
+          <text class="badge">{{difficultyLabel}}</text>
+          <text class="mono">{{dateLabel}}</text>
+        </view>
+        <h1 class="serif hero__title">{{activity.title}}</h1>
+        <p wx:if="{{activity.summary}}" class="hero__summary">{{activity.summary}}</p>
+        <view class="hero__meta">
+          <text bindtap="onOpenHost">发起 · {{activity.host.name}}</text>
+          <text>同行 {{activity.memberCount}} 人</text>
+          <text>影像 {{activity.photoCount}} 张</text>
+        </view>
+        <button
+          class="btn btn--full hero__join {{joinState === 'pending' || joinState === 'rejected' || joinState === 'closed' || joinState === 'invite' ? 'btn--paper' : (joinState === 'host' || joinState === 'member' ? 'btn--outline' : 'btn--signal')}} {{joinSubmitting ? 'btn--disabled' : ''}}"
+          bindtap="onJoinTap"
+        >
+          {{joinState === 'pending' ? joinLabel + ' · 点击撤回' : joinLabel}}
+        </button>
+        <view wx:if="{{!isMember && !isHost}}" class="hero__lock">
+          <text class="mono">PRIVATE ROLL</text>
+          <text>照片、成员名单与集合点，只对通过申请的人可见。</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 相册 -->
+    <view class="shell album">
+      <view class="section-head">
+        <h2 class="serif">活动相册</h2>
+        <text class="mono">{{photos.length}} 张</text>
+      </view>
+
+      <block wx:if="{{isMember}}">
+        <button class="btn btn--signal btn--full album__upload" bindtap="onUploadToActivity">放进一张照片</button>
+        <block wx:for="{{photoGroups}}" wx:key="label" wx:for-item="group">
+          <view class="album__day mono">{{group.label}}</view>
+          <view class="grid-2 album__grid">
+            <photo-tile wx:for="{{group.photos}}" wx:key="id" photo="{{item}}" showAuthor="{{true}}" />
+          </view>
+        </block>
+        <empty-state
+          wx:if="{{photos.length === 0}}"
+          title="相册还在等第一张"
+          desc="成为第一个放进照片的人，让这次同行留下影像。"
+          actionText="放进一张照片"
+          actionTab="/pages/upload/upload"
+        />
+      </block>
+
+      <view wx:else class="locked card">
+        <text class="mono">MEMBERS ONLY</text>
+        <p>{{activity.photoCount}} 张照片，正在等同行的人。通过申请后，就可以看到它们。</p>
+      </view>
+    </view>
+
+    <!-- 活动事实 -->
+    <view class="shell">
+      <view class="section-head">
+        <h2 class="serif">活动事实</h2>
+        <text class="mono">FIELD NOTES</text>
+      </view>
+      <view class="facts card">
+        <view class="facts__row">
+          <text class="facts__label">日期</text>
+          <text class="facts__value">{{dateLabel}}</text>
+        </view>
+        <view class="facts__row" wx:if="{{activity.region}}">
+          <text class="facts__label">地区</text>
+          <text class="facts__value">{{activity.region}}</text>
+        </view>
+        <view class="facts__row" wx:if="{{activity.routeName}}">
+          <text class="facts__label">路线</text>
+          <text class="facts__value">{{activity.routeName}}</text>
+        </view>
+        <view class="facts__row">
+          <text class="facts__label">强度</text>
+          <text class="facts__value">{{difficultyLabel}} · {{difficultyNote}}</text>
+        </view>
+        <view class="facts__row">
+          <text class="facts__label">名额</text>
+          <text class="facts__value">{{activity.capacity ? activity.capacity + ' 人' : '不限'}}</text>
+        </view>
+        <view class="facts__row" wx:if="{{isMember && activity.meetingPoint}}">
+          <text class="facts__label">集合点</text>
+          <text class="facts__value facts__value--secret">{{activity.meetingPoint}}</text>
+        </view>
+        <view class="facts__row" wx:if="{{!isMember}}">
+          <text class="facts__label">集合点</text>
+          <text class="facts__value facts__value--mute">通过申请后可见</text>
+        </view>
+      </view>
+      <view wx:if="{{isMember && activity.description}}" class="card desc-card">
+        <text class="mono">DESCRIPTION / 活动说明</text>
+        <text class="desc-card__text">{{activity.description}}</text>
+      </view>
+    </view>
+
+    <!-- 发起人 -->
+    <view class="shell">
+      <view class="section-head">
+        <h2 class="serif">发起人</h2>
+        <text class="mono">HOST</text>
+      </view>
+      <view class="author-row" bindtap="onOpenHost">
+        <view class="author-row__avatar">{{activity.host.name[0] || '山'}}</view>
+        <view class="author-row__info">
+          <text class="author-row__name serif">{{activity.host.name}}</text>
+          <text class="mono">@{{activity.host.username}}{{activity.host.homeBase ? ' · ' + activity.host.homeBase : ''}}</text>
+          <text wx:if="{{activity.host.bio}}" class="author-row__bio">{{activity.host.bio}}</text>
+        </view>
+        <text class="author-row__arrow">→</text>
+      </view>
+      <view wx:if="{{isHost}}" class="host-actions">
+        <button class="btn btn--outline btn--sm" bindtap="onManage">管理申请与成员</button>
+      </view>
+    </view>
+
+    <!-- 成员名单 -->
+    <view class="shell" wx:if="{{isMember && members.length > 0}}">
+      <view class="section-head">
+        <h2 class="serif">同行者</h2>
+        <text class="mono">{{members.length}} 人</text>
+      </view>
+      <view class="member-list">
+        <view class="member-item" wx:for="{{members}}" wx:key="id" data-username="{{item.user.username}}" bindtap="onOpenMember">
+          <view class="member-item__avatar">{{item.user.name[0] || '山'}}</view>
+          <view class="member-item__info">
+            <text>{{item.user.name}}</text>
+            <text class="mono">@{{item.user.username}}</text>
+          </view>
+          <text wx:if="{{item.role === 'host'}}" class="badge">发起人</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="shell">
+      <button class="btn btn--paper btn--full" open-type="share">分享这次活动</button>
+    </view>
+  </block>
+</view>

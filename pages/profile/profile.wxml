@@ -1,0 +1,38 @@
+<view class="page">
+  <view class="head">
+    <view class="eyebrow"><view class="dot"></view>PROFILE / 档案成员资料</view>
+    <h1 class="serif head__title">关于你和山</h1>
+  </view>
+
+  <view class="form">
+    <view class="field">
+      <text class="field__label required">称呼</text>
+      <input class="input" value="{{name}}" bindinput="onName" placeholder="档案里怎么称呼你" placeholder-class="ph" maxlength="30" />
+    </view>
+
+    <view class="field">
+      <text class="field__label">用户名（不可修改）</text>
+      <input class="input input--readonly" value="{{username}}" disabled />
+      <text class="form-help">用于公开档案链接：/hikers/{{username}}</text>
+    </view>
+
+    <view class="field">
+      <text class="field__label">常从哪里出发（可选）</text>
+      <input class="input" value="{{homeBase}}" bindinput="onHomeBase" placeholder="例如：杭州" placeholder-class="ph" maxlength="40" />
+    </view>
+
+    <view class="field">
+      <text class="field__label">一句关于你和山的话（可选）</text>
+      <textarea class="textarea" value="{{bio}}" bindinput="onBio" placeholder="写在档案里的自我介绍" placeholder-class="ph" maxlength="280" />
+    </view>
+
+    <view class="field">
+      <text class="field__label">登录邮箱</text>
+      <input class="input input--readonly" value="{{email}}" disabled />
+    </view>
+
+    <button class="btn btn--signal btn--full {{submitting ? 'btn--disabled' : ''}}" bindtap="onSubmit" disabled="{{submitting}}">
+      {{submitting ? '正在保存…' : '保存资料'}}
+    </button>
+  </view>
+</view>

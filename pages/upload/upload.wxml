@@ -1,0 +1,222 @@
+<view class="page">
+  <!-- 未登录 -->
+  <view wx:if="{{view === 'login'}}" class="login-hero">
+    <view class="eyebrow"><view class="dot"></view>ADD A PHOTO / 放进</view>
+    <h1 class="serif">把这一趟山野，放进档案</h1>
+    <p>每一张照片都必须先属于一次已加入的活动。上传后，由视觉模型认真观看，写下一份中文手记；3 分以上进入活动相册。</p>
+    <button class="btn btn--signal" bindtap="onLogin">登录后开始</button>
+  </view>
+
+  <!-- 第一步：选择活动 -->
+  <block wx:if="{{view === 'gate'}}">
+    <view class="gate">
+      <view class="eyebrow"><view class="dot"></view>STEP 01 / 选择一次同行</view>
+      <h1 class="serif gate__title">这张照片，来自哪次活动？</h1>
+      <p class="gate__desc">照片先属于一次真实的徒步。只有你已加入的活动可以放进照片。</p>
+
+      <view class="gate__list">
+        <view class="gate-item" wx:for="{{activities}}" wx:key="id" data-id="{{item.id}}" bindtap="onSelectActivity">
+          <view class="gate-item__body">
+            <text class="gate-item__title serif">{{item.title}}</text>
+            <text class="gate-item__meta mono">{{item.dateLabel}}{{item.status === 'closed' ? ' · 报名已结束' : ''}}</text>
+          </view>
+          <text class="gate-item__cta">放进这次活动 →</text>
+        </view>
+      </view>
+
+      <empty-state
+        wx:if="{{activities.length === 0}}"
+        title="还没有加入任何活动"
+        desc="先发起一次活动，或在活动页申请加入；通过后就可以往相册里放照片了。"
+        actionText="去看看活动"
+        actionTab="/pages/activities/activities"
+      />
+    </view>
+  </block>
+
+  <!-- 第二步：填写与选图 -->
+  <block wx:if="{{view === 'compose'}}">
+    <view class="compose">
+      <view class="compose__activity card">
+        <view class="eyebrow"><view class="dot"></view>FIELD ROLL / 这次同行</view>
+        <view class="compose__activity-title serif">{{activity.title}}</view>
+        <text class="text-link" bindtap="onBackToGate">换一次活动</text>
+      </view>
+
+      <!-- 模式 -->
+      <view class="mode-tabs">
+        <view class="mode-tab {{mode === 'single' ? 'is-active' : ''}}" data-mode="single" bindtap="onMode">单张</view>
+        <view class="mode-tab {{mode === 'batch' ? 'is-active' : ''}}" data-mode="batch" bindtap="onMode">批量 · 最多 9 张</view>
+      </view>
+
+      <!-- 选图 -->
+      <view class="dropzone" bindtap="chooseImages">
+        <block wx:if="{{items.length === 0}}">
+          <view class="dropzone__corners"></view>
+          <text class="dropzone__title">点这里选择照片</text>
+          <text class="dropzone__hint mono">JPEG / PNG / WEBP · 单张 ≤ 20MB</text>
+        </block>
+        <block wx:else>
+          <view class="chosen-grid">
+            <view class="chosen" wx:for="{{items}}" wx:key="index">
+              <image class="chosen__img" src="{{item.tempPath}}" mode="aspectFill" />
+              <text class="chosen__index mono">{{index + 1 < 10 ? '0' : ''}}{{index + 1}}</text>
+              <view class="chosen__remove" data-index="{{item.index}}" catchtap="removeImage">×</view>
+            </view>
+            <view wx:if="{{items.length < 9}}" class="chosen chosen--add" bindtap="chooseImages">
+              <text>＋</text>
+            </view>
+          </view>
+        </block>
+      </view>
+
+      <!-- 表单 -->
+      <view class="field">
+        <text class="field__label {{mode === 'batch' ? '' : 'required'}}">{{mode === 'batch' ? '组名（留空自动编号）' : '标题'}}</text>
+        <input class="input" value="{{title}}" bindinput="onTitle" placeholder="{{mode === 'batch' ? '例如：武功山之行' : '给这张照片一个名字'}}" placeholder-class="input-ph" maxlength="80" />
+      </view>
+
+      <view class="field">
+        <text class="field__label">{{mode === 'batch' ? '共同说明（可选）' : '说明（可选）'}}</text>
+        <textarea class="textarea" value="{{caption}}" bindinput="onCaption" placeholder="拍下它时，山野正在发生什么" placeholder-class="input-ph" maxlength="600" />
+      </view>
+
+      <view class="field">
+        <text class="field__label">主题</text>
+        <view class="theme-select">
+          <view
+            wx:for="{{themes}}"
+            wx:key="id"
+            class="theme-option {{theme === item.id ? 'is-active' : ''}}"
+            data-id="{{item.id}}"
+            bindtap="onTheme"
+          >
+            <view class="theme-option__dot" style="background: {{item.color}}"></view>
+            <text>{{item.id === 'auto' ? '让山野判断 ✦' : item.label}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="compose__row">
+        <view class="field compose__half">
+          <text class="field__label">拍摄地点（可选）</text>
+          <input class="input" value="{{locationName}}" bindinput="onLocation" placeholder="例如：浙江 · 临安" placeholder-class="input-ph" maxlength="80" />
+        </view>
+        <view class="field compose__half">
+          <text class="field__label">拍摄日期（可选）</text>
+          <picker mode="date" value="{{takenAt}}" end="{{today}}" bindchange="onTakenAt">
+            <view class="input picker-view">{{takenAt || '选择日期'}}</view>
+          </picker>
+        </view>
+      </view>
+
+      <view class="compose__note">
+        <text class="mono">SHARED IN A FIELD ROLL</text>
+        <p>活动照片默认只对同行者可见。想放进公共档案，需要观看达到 3 分后，在照片页由你自己决定。</p>
+      </view>
+
+      <button class="btn btn--signal btn--full compose__submit" bindtap="onSubmit">
+        放进这次活动（{{items.length || 0}} 张）
+      </button>
+    </view>
+  </block>
+
+  <!-- 第三步：上传与观看 -->
+  <block wx:if="{{view === 'working'}}">
+    <view class="working">
+      <view class="working__head">
+        <view class="eyebrow"><view class="dot"></view>WATCHING / 山野正在观看</view>
+        <text class="mono">{{doneCount}} / {{totalCount}}</text>
+      </view>
+      <p class="working__desc">
+        视觉模型正在从光影、构图、山野叙事与独特观看四个维度阅读每一张照片，通常需要 10–40 秒。请保持页面打开。
+      </p>
+      <view class="working-list">
+        <view class="working-item" wx:for="{{results}}" wx:key="id">
+          <image class="working-item__img" src="{{item.tempPath || (item.photo ? item.photo.thumb : '')}}" mode="aspectFill" />
+          <view class="working-item__body">
+            <view class="working-item__top">
+              <text class="badge {{item.status === 'accepted' ? '' : item.status === 'rejected' ? 'badge--danger' : item.status === 'error' ? 'badge--mute' : 'badge--signal'}}">{{item.statusLabel}}</text>
+              <text class="mono">{{item.progress}}%</text>
+            </view>
+            <view class="working-item__bar">
+              <view class="working-item__fill" style="width: {{item.status === 'uploading' ? item.progress : 100}}%"></view>
+            </view>
+            <text wx:if="{{item.error}}" class="working-item__error">{{item.error}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 第四步：结果 -->
+  <block wx:if="{{view === 'result'}}">
+    <view class="result">
+      <view class="result__head">
+        <h1 class="serif">
+          {{summaryStats.accepted}} 张入选{{summaryStats.rejected > 0 ? "，还有 " + summaryStats.rejected + " 张，留给下一次" : ""}}
+        </h1>
+        <view class="result__stats mono">
+          <text>完成 {{summaryStats.total}}</text>
+          <text>进入活动相册 {{summaryStats.accepted}}</text>
+          <text wx:if="{{summaryStats.rejected}}">未达邀请线 {{summaryStats.rejected}}</text>
+          <text wx:if="{{summaryStats.failed}}">需要再看一次 {{summaryStats.failed}}</text>
+        </view>
+      </view>
+
+      <view class="result-card" wx:for="{{results}}" wx:key="id">
+        <view class="result-card__imgwrap" data-url="{{item.tempPath || (item.photo ? item.photo.img : '')}}" bindtap="onPreview">
+          <image class="result-card__img" src="{{item.tempPath || (item.photo ? item.photo.img : '')}}" mode="widthFix" />
+          <view wx:if="{{item.photo}}" class="stamp {{item.accepted ? 'stamp--in' : 'stamp--out'}}">
+            <text class="stamp__label">{{item.accepted ? '放进' : '未收录'}}</text>
+            <text class="stamp__score">{{item.scoreLabel}}</text>
+          </view>
+        </view>
+        <view class="result-card__body">
+          <view class="result-card__top">
+            <text class="badge {{item.status === 'accepted' ? '' : item.status === 'rejected' ? 'badge--danger' : 'badge--mute'}}">{{item.statusLabel}}</text>
+            <text class="mono" wx:if="{{item.latencyLabel}}">{{item.latencyLabel}}{{item.photo && item.photo.aiModel ? ' · ' + item.photo.aiModel : ''}}</text>
+          </view>
+          <view class="result-card__title serif">
+            {{item.photo ? item.photo.title : '这一张没有完成'}}
+          </view>
+          <view wx:if="{{item.photo && item.score !== null}}" class="result-card__verdict">
+            {{item.verdict}} · {{item.scoreLabel}} / 5.0
+            <text class="result-card__hint">{{item.score >= 3 ? '达到了' : '离'}} 3.0 的邀请线{{item.score >= 3 ? '' : '还差一点'}}</text>
+          </view>
+          <p wx:if="{{item.summary}}" class="result-card__summary">“{{item.summary}}”</p>
+
+          <block wx:if="{{item.status === 'rejected'}}">
+            <view class="result-card__list">
+              <text class="mono">01 / 它依然好的地方</text>
+              <text wx:for="{{item.strengths}}" wx:for-item="line" wx:key="*this" class="result-card__line">· {{line}}</text>
+            </view>
+            <view class="result-card__list" bindtap="onToggleExpand" data-index="{{index}}">
+              <text class="mono result-card__toggle">{{item.expanded ? '收起' : '展开'}} 02 / 下一次，可以试试 ↓</text>
+              <block wx:if="{{item.expanded}}">
+                <text wx:for="{{item.improvements}}" wx:for-item="line" wx:key="*this" class="result-card__line">· {{line}}</text>
+              </block>
+            </view>
+            <view class="result-card__note">
+              <p>这次的照片不会被保存。你没有做错什么，只是这一次还没有走到邀请线上。</p>
+            </view>
+          </block>
+
+          <view wx:if="{{item.status === 'error'}}" class="result-card__note">
+            <p>{{item.error || '观看没有完成。'}} 这张照片的观看被中断了，可以回到「我的」再试一次。</p>
+          </view>
+
+          <view class="result-card__actions">
+            <button wx:if="{{item.photo && item.accepted}}" class="btn btn--ink btn--sm" data-id="{{item.photo.id}}" bindtap="onOpenPhoto">查看这张照片</button>
+          </view>
+        </view>
+      </view>
+
+      <view class="result__foot">
+        <button class="btn btn--signal" bindtap="onAgain">再放一张</button>
+        <button class="btn btn--outline" bindtap="onBackToActivity">回到活动</button>
+        <button class="btn btn--paper" bindtap="onBackHome">回到山口</button>
+      </view>
+    </view>
+  </block>
+</view>

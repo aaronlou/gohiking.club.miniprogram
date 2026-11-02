@@ -1,0 +1,13 @@
+.page {
+  padding: 48rpx 40rpx 120rpx;
+}
+
+.head__title {
+  font-size: 48rpx;
+  color: var(--forest);
+  margin: 20rpx 0 36rpx;
+}
+
+.ph {
+  color: var(--sage);
+}
