@@ -1,0 +1,1 @@
+# gohiking.club.miniprogram
