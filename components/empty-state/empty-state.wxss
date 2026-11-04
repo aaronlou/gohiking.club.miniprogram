@@ -12,7 +12,7 @@
 
 .empty__title {
   font-size: 34rpx;
-  font-family: Georgia, "Songti SC", serif;
+  font-family: Georgia, "Songti SC", "Noto Serif SC", "Source Han Serif SC", serif;
   color: #1b211a;
   margin-bottom: 12rpx;
 }

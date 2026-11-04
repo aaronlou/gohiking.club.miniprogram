@@ -3,6 +3,8 @@ const { DIFFICULTIES, JOIN_POLICIES, VISIBILITIES } = require("../../utils/const
 
 Page({
   data: {
+    keyboardUp: false, // 键盘弹起时隐藏吸底提交按钮
+
     title: "",
     summary: "",
     description: "",
@@ -25,6 +27,14 @@ Page({
   onLoad() {
     const today = new Date().toISOString().slice(0, 10);
     this.setData({ today, startDate: today });
+  },
+
+  onKeyboardShow() {
+    this.setData({ keyboardUp: true });
+  },
+
+  onKeyboardHide() {
+    this.setData({ keyboardUp: false });
   },
 
   onTitle(e) { this.setData({ title: e.detail.value }); },

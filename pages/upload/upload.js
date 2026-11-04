@@ -62,6 +62,7 @@ Page({
     summaryStats: null,
     doneCount: 0,
     totalCount: 0,
+    keyboardUp: false, // 键盘弹起时隐藏吸底提交按钮，避免遮挡输入区
   },
 
   onShow() {
@@ -146,6 +147,14 @@ Page({
   },
 
   /* ---------- 表单 ---------- */
+
+  onKeyboardShow() {
+    this.setData({ keyboardUp: true });
+  },
+
+  onKeyboardHide() {
+    this.setData({ keyboardUp: false });
+  },
 
   onMode(e) {
     this.setData({ mode: e.currentTarget.dataset.mode });

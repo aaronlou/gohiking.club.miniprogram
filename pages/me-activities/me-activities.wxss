@@ -1,4 +1,5 @@
 .page {
+  padding: 40rpx 40rpx 80rpx;
   padding: 40rpx 40rpx calc(80rpx + env(safe-area-inset-bottom));
 }
 
@@ -16,7 +17,7 @@
 .section-head h2 {
   font-size: 36rpx;
   font-weight: 600;
-  font-family: Georgia, "Songti SC", serif;
+  font-family: Georgia, "Songti SC", "Noto Serif SC", "Source Han Serif SC", serif;
 }
 
 .quiet-card {
@@ -47,7 +48,7 @@
   align-items: center;
   justify-content: center;
   font-size: 28rpx;
-  font-family: Georgia, serif;
+  font-family: Georgia, "Songti SC", "Noto Serif SC", "Source Han Serif SC", serif;
   flex-shrink: 0;
 }
 

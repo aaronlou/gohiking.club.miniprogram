@@ -1,4 +1,5 @@
 .page {
+  padding: 48rpx 40rpx 160rpx;
   padding: 48rpx 40rpx calc(160rpx + env(safe-area-inset-bottom));
 }
 
@@ -42,7 +43,12 @@
   position: fixed;
   left: 40rpx;
   right: 40rpx;
+  bottom: 24rpx;
   bottom: calc(24rpx + env(safe-area-inset-bottom));
   z-index: 20;
   box-shadow: 0 8rpx 32rpx rgba(27, 33, 26, 0.14);
+}
+
+.form-submit.is-keyboard-hidden {
+  visibility: hidden;
 }

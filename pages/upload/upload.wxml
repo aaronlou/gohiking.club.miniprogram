@@ -73,12 +73,12 @@
       <!-- 表单 -->
       <view class="field">
         <text class="field__label {{mode === 'batch' ? '' : 'required'}}">{{mode === 'batch' ? '组名（留空自动编号）' : '标题'}}</text>
-        <input class="input" value="{{title}}" bindinput="onTitle" confirm-type="done" cursor-spacing="24" placeholder="{{mode === 'batch' ? '例如：武功山之行' : '给这张照片一个名字'}}" placeholder-class="input-ph" maxlength="80" />
+        <input class="input" value="{{title}}" bindinput="onTitle" bindfocus="onKeyboardShow" bindblur="onKeyboardHide" confirm-type="done" cursor-spacing="24" placeholder="{{mode === 'batch' ? '例如：武功山之行' : '给这张照片一个名字'}}" placeholder-class="input-ph" maxlength="80" />
       </view>
 
       <view class="field">
         <text class="field__label">{{mode === 'batch' ? '共同说明（可选）' : '说明（可选）'}}</text>
-        <textarea class="textarea" value="{{caption}}" bindinput="onCaption" cursor-spacing="24" adjust-position="{{true}}" placeholder="拍下它时，山野正在发生什么" placeholder-class="input-ph" maxlength="600" />
+        <textarea class="textarea" value="{{caption}}" bindinput="onCaption" bindfocus="onKeyboardShow" bindblur="onKeyboardHide" cursor-spacing="24" adjust-position="{{true}}" placeholder="拍下它时，山野正在发生什么" placeholder-class="input-ph" maxlength="600" />
       </view>
 
       <view class="field">
@@ -100,7 +100,7 @@
       <view class="compose__row">
         <view class="field compose__half">
           <text class="field__label">拍摄地点（可选）</text>
-          <input class="input" value="{{locationName}}" bindinput="onLocation" confirm-type="done" cursor-spacing="24" placeholder="例如：浙江 · 临安" placeholder-class="input-ph" maxlength="80" />
+          <input class="input" value="{{locationName}}" bindinput="onLocation" bindfocus="onKeyboardShow" bindblur="onKeyboardHide" confirm-type="done" cursor-spacing="24" placeholder="例如：浙江 · 临安" placeholder-class="input-ph" maxlength="80" />
         </view>
         <view class="field compose__half">
           <text class="field__label">拍摄日期（可选）</text>
@@ -115,7 +115,7 @@
         <p>活动照片默认只对同行者可见。想放进公共档案，需要观看达到 3 分后，在照片页由你自己决定。</p>
       </view>
 
-      <button hover-class="btn-hover" class="btn btn--signal btn--full compose__submit" bindtap="onSubmit">
+      <button hover-class="btn-hover" class="btn btn--signal btn--full compose__submit {{keyboardUp ? 'is-keyboard-hidden' : ''}}" bindtap="onSubmit">
         放进这次活动（{{items.length || 0}} 张）
       </button>
     </view>

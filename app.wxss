@@ -286,7 +286,7 @@ page {
 
 .empty h3 {
   font-size: 34rpx;
-  font-family: Georgia, "Songti SC", serif;
+  font-family: Georgia, "Songti SC", "Noto Serif SC", "Source Han Serif SC", serif;
   margin-bottom: 12rpx;
 }
 

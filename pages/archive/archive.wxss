@@ -1,4 +1,5 @@
 .page {
+  padding-bottom: 180rpx;
   padding-bottom: calc(180rpx + env(safe-area-inset-bottom));
 }
 
@@ -106,7 +107,7 @@
   align-items: center;
   justify-content: center;
   font-size: 32rpx;
-  font-family: Georgia, serif;
+  font-family: Georgia, "Songti SC", "Noto Serif SC", "Source Han Serif SC", serif;
   flex-shrink: 0;
 }
 

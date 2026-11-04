@@ -8,7 +8,7 @@
   <view class="form">
     <view class="field">
       <text class="field__label required">活动名称</text>
-      <input class="input" value="{{title}}" bindinput="onTitle" confirm-type="next" cursor-spacing="24" placeholder="例如：武功山金顶看日出" placeholder-class="ph" maxlength="80" />
+      <input class="input" value="{{title}}" bindinput="onTitle bindfocus="onKeyboardShow" bindblur="onKeyboardHide" confirm-type="next" cursor-spacing="24" placeholder="例如：武功山金顶看日出" placeholder-class="ph" maxlength="80" />
     </view>
 
     <view class="field">
@@ -27,17 +27,17 @@
 
     <view class="field">
       <text class="field__label">一句话介绍</text>
-      <input class="input" value="{{summary}}" bindinput="onSummary" confirm-type="next" cursor-spacing="24" placeholder="这次同行要去哪里，看什么" placeholder-class="ph" maxlength="140" />
+      <input class="input" value="{{summary}}" bindinput="onSummary bindfocus="onKeyboardShow" bindblur="onKeyboardHide" confirm-type="next" cursor-spacing="24" placeholder="这次同行要去哪里，看什么" placeholder-class="ph" maxlength="140" />
     </view>
 
     <view class="field">
       <text class="field__label">地区（可选）</text>
-      <input class="input" value="{{region}}" bindinput="onRegion" confirm-type="next" cursor-spacing="24" placeholder="例如：江西 · 萍乡" placeholder-class="ph" maxlength="40" />
+      <input class="input" value="{{region}}" bindinput="onRegion bindfocus="onKeyboardShow" bindblur="onKeyboardHide" confirm-type="next" cursor-spacing="24" placeholder="例如：江西 · 萍乡" placeholder-class="ph" maxlength="40" />
     </view>
 
     <view class="field">
       <text class="field__label">路线（可选）</text>
-      <input class="input" value="{{routeName}}" bindinput="onRoute" confirm-type="next" cursor-spacing="24" placeholder="例如：沈子村 — 金顶 — 发云界" placeholder-class="ph" maxlength="60" />
+      <input class="input" value="{{routeName}}" bindinput="onRoute bindfocus="onKeyboardShow" bindblur="onKeyboardHide" confirm-type="next" cursor-spacing="24" placeholder="例如：沈子村 — 金顶 — 发云界" placeholder-class="ph" maxlength="60" />
     </view>
 
     <view class="field">
@@ -70,15 +70,15 @@
       <text class="mono">更多设置（仅成员可见）</text>
       <view class="field" style="margin-top: 20rpx;">
         <text class="field__label">集合点（≤120 字）</text>
-        <input class="input" value="{{meetingPoint}}" bindinput="onMeetingPoint" confirm-type="done" cursor-spacing="24" placeholder="通过申请的成员才能看到" placeholder-class="ph" maxlength="120" />
+        <input class="input" value="{{meetingPoint}}" bindinput="onMeetingPoint bindfocus="onKeyboardShow" bindblur="onKeyboardHide" confirm-type="done" cursor-spacing="24" placeholder="通过申请的成员才能看到" placeholder-class="ph" maxlength="120" />
       </view>
       <view class="field">
         <text class="field__label">活动说明（≤2000 字）</text>
-        <textarea class="textarea" value="{{description}}" bindinput="onDescription" cursor-spacing="24" adjust-position="{{true}}" placeholder="行程安排、装备建议、注意事项…" placeholder-class="ph" maxlength="2000" />
+        <textarea class="textarea" value="{{description}}" bindinput="onDescription bindfocus="onKeyboardShow" bindblur="onKeyboardHide" cursor-spacing="24" adjust-position="{{true}}" placeholder="行程安排、装备建议、注意事项…" placeholder-class="ph" maxlength="2000" />
       </view>
     </view>
 
-    <button hover-class="btn-hover" class="btn btn--signal btn--full form-submit {{submitting ? 'btn--disabled' : ''}}" bindtap="onSubmit" disabled="{{submitting}}">
+    <button hover-class="btn-hover" class="btn btn--signal btn--full form-submit {{keyboardUp ? 'is-keyboard-hidden' : ''}} {{submitting ? 'btn--disabled' : ''}}" bindtap="onSubmit" disabled="{{submitting}}">
       {{submitting ? '正在建立…' : '建立这次活动'}}
     </button>
   </view>
