@@ -1,5 +1,6 @@
 const api = require("../../utils/api");
 const fmt = require("../../utils/format");
+const privacy = require("../../utils/privacy");
 const { THEME_OPTIONS, FALLBACK_TIPS } = require("../../utils/constants");
 
 const MAX_BATCH = 9;
@@ -183,6 +184,16 @@ Page({
   /* ---------- 选图 ---------- */
 
   chooseImages() {
+    // 相册属于隐私接口：先确保用户已同意《用户隐私保护指引》
+    privacy
+      .ensurePrivacy()
+      .then(() => this.doChooseImages())
+      .catch((err) => {
+        wx.showToast({ title: err.message || "需要同意隐私保护指引", icon: "none" });
+      });
+  },
+
+  doChooseImages() {
     wx.chooseMedia({
       count: MAX_BATCH,
       mediaType: ["image"],

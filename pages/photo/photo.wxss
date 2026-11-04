@@ -344,3 +344,15 @@
 .related {
   margin-top: 16rpx;
 }
+
+/* 举报入口 */
+.report-row {
+  margin-top: 24rpx;
+  text-align: center;
+}
+
+.report-row__link {
+  font-size: 22rpx;
+  color: var(--ink-mute);
+  text-decoration: underline;
+}

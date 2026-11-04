@@ -20,7 +20,7 @@
       <p>我们还没有看完这张照片。{{isOwner && photo.status === 'failed' ? '观看被中断了，可以现在请山野再看一次。' : '回到工作室可以继续，也可以让它先安静地待着。'}}</p>
       <view class="banner__actions">
         <button wx:if="{{isOwner && photo.status === 'failed'}}" class="btn btn--signal btn--sm" hover-class="btn-hover" bindtap="onRetryEvaluate">重新观看</button>
-        <button hover-class="btn-hover" class="btn btn--outline btn--sm" hover-class="btn-hover" bindtap="onBackStudio">回到工作室</button>
+        <button class="btn btn--outline btn--sm" hover-class="btn-hover" bindtap="onBackStudio">回到工作室</button>
       </view>
     </view>
 
@@ -132,6 +132,11 @@
       <!-- 删除 -->
       <view wx:if="{{isOwner}}" class="owner-actions">
         <button hover-class="btn-hover" class="btn btn--paper btn--sm" bindtap="onDelete">删除这张照片</button>
+      </view>
+
+      <!-- 举报（非本人照片） -->
+      <view wx:if="{{!isOwner}}" class="report-row">
+        <text class="report-row__link" hover-class="is-hover" bindtap="onReport">内容有问题？举报这张照片</text>
       </view>
 
       <!-- 观看手记 -->

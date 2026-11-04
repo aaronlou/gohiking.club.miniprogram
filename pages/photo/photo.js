@@ -22,6 +22,7 @@ Page({
     likeSubmitting: false,
     publishSubmitting: false,
     retrying: false,
+    reportSubmitting: false,
     metaList: [],
   },
 
@@ -193,6 +194,48 @@ Page({
 
   onRetry() {
     this.fetch();
+  },
+
+  /* ---------- 举报 ---------- */
+
+  onReport() {
+    if (this.data.reportSubmitting) return;
+    const reasons = [
+      "违法违规内容",
+      "侵犯他人权益（肖像 / 版权）",
+      "垃圾广告或营销",
+      "与山野主题无关",
+      "其它问题",
+    ];
+    wx.showActionSheet({
+      itemList: reasons,
+      success: (res) => {
+        const reason = reasons[res.tapIndex];
+        if (!reason) return;
+        wx.showModal({
+          title: "确认举报",
+          content: `将向管理员举报这张照片（${reason}），我们会在核实后处理。`,
+          confirmColor: "#df5a34",
+          success: (m) => {
+            if (!m.confirm) return;
+            this.setData({ reportSubmitting: true });
+            api
+              .post("/api/photos/" + this.photoId + "/report", { reason })
+              .then(() => {
+                this.setData({ reportSubmitting: false });
+                wx.showToast({ title: "已收到你的举报", icon: "success" });
+              })
+              .catch((err) => {
+                this.setData({ reportSubmitting: false });
+                wx.showToast({
+                  title: err.statusCode === 404 ? "举报通道即将开放" : err.message || "举报没有成功",
+                  icon: "none",
+                });
+              });
+          },
+        });
+      },
+    });
   },
 
   /* 观看中断的照片：本人可重新请山野观看 */
