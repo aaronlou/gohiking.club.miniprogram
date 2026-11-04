@@ -5,6 +5,7 @@ Page({
   data: {
     loading: true,
     loadError: "",
+    loggedIn: true,
     pendingRequests: [],
     hosted: [],
     joined: [],
@@ -12,8 +13,17 @@ Page({
   },
 
   onShow() {
-    if (!api.requireLogin("/pages/me-activities/me-activities")) return;
+    if (!api.getUser()) {
+      // 未登录时给出可操作的引导态，而不是永远停在加载动画
+      this.setData({ loading: false, loggedIn: false });
+      return;
+    }
+    this.setData({ loggedIn: true });
     this.fetch();
+  },
+
+  onLogin() {
+    wx.navigateTo({ url: "/pages/login/login?next=/pages/me-activities/me-activities" });
   },
 
   onPullDownRefresh() {

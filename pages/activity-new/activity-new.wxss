@@ -1,5 +1,5 @@
 .page {
-  padding: 48rpx 40rpx 120rpx;
+  padding: 48rpx 40rpx calc(160rpx + env(safe-area-inset-bottom));
 }
 
 .head__title {
@@ -35,4 +35,14 @@
 
 .ph {
   color: var(--sage);
+}
+
+/* 提交按钮吸底，长表单滚动时始终可点 */
+.form-submit {
+  position: fixed;
+  left: 40rpx;
+  right: 40rpx;
+  bottom: calc(24rpx + env(safe-area-inset-bottom));
+  z-index: 20;
+  box-shadow: 0 8rpx 32rpx rgba(27, 33, 26, 0.14);
 }

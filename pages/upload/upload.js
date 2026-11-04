@@ -33,6 +33,7 @@ function decorateResult(item) {
     error: item.error || "",
     photo: photo ? fmt.decoratePhoto(photo) : null,
     accepted,
+    score: photo && photo.score !== null && photo.score !== undefined ? Number(photo.score) : null,
     latencyLabel: item.latencyMs ? (item.latencyMs / 1000).toFixed(1) + "s" : "",
     scoreLabel: photo ? fmt.formatScore(photo.score) : "—",
     verdict: photo && photo.score !== null ? fmt.scoreVerdict(photo.score) : "",
@@ -73,8 +74,13 @@ Page({
     const app = getApp();
     if (app.globalData.pendingUploadActivitySlug) {
       const slug = app.globalData.pendingUploadActivitySlug;
-      app.globalData.pendingUploadActivitySlug = null;
-      if (api.getUser()) this.loadGate(slug);
+      if (api.getUser()) {
+        app.globalData.pendingUploadActivitySlug = null;
+        this.loadGate(slug);
+      } else {
+        // 未登录先保留，登录回来再定位到这次活动
+        this.setData({ view: "login" });
+      }
       return;
     }
     if (!api.getUser()) {
@@ -206,7 +212,9 @@ Page({
 
   removeImage(e) {
     const index = e.currentTarget.dataset.index;
-    const items = this.data.items.filter((item) => item.index !== index);
+    const items = this.data.items
+      .filter((item) => item.index !== index)
+      .map((item, i) => Object.assign({}, item, { index: i }));
     this.setData({ items });
   },
 
@@ -253,6 +261,7 @@ Page({
       doneCount: 0,
       totalCount: tasks.length,
     });
+    this._tasks = tasks;
     this.runPipeline(tasks);
   },
 
@@ -349,6 +358,77 @@ Page({
   onToggleExpand(e) {
     const index = e.currentTarget.dataset.index;
     this.updateResult(index, { expanded: !this.data.results[index].expanded });
+  },
+
+  /* ---------- 结果页单项重试 ---------- */
+
+  onRetryItem(e) {
+    const index = e.currentTarget.dataset.index;
+    const task = (this._tasks || []).find((t) => t.index === index);
+    if (!task || this._retrying) return;
+    this._retrying = true;
+    const finish = (patch) => {
+      this.updateResult(index, patch);
+      this._retrying = false;
+      this.refreshSummary();
+    };
+    if (!task.photo || !task.photo.id) {
+      // 上传就没成功：整条重走
+      this.updateResult(index, { status: "uploading", statusLabel: STATUS_LABEL.uploading, progress: 0, error: "" });
+      api
+        .uploadPhoto(task.tempPath, task.formData, (progress) => {
+          this.updateResult(index, { progress });
+        })
+        .then((data) => {
+          this.evaluateTask(Object.assign({}, task, { photo: data.photo }), index, finish);
+        })
+        .catch((err) => {
+          finish({
+            status: "error",
+            statusLabel: STATUS_LABEL.error,
+            error: err.message || "上传失败",
+          });
+        });
+      return;
+    }
+    this.evaluateTask(task, index, finish);
+  },
+
+  evaluateTask(task, index, finish) {
+    this.updateResult(index, { status: "evaluating", statusLabel: STATUS_LABEL.evaluating, progress: 100, error: "" });
+    api
+      .request("/api/photos/" + task.photo.id + "/evaluate", { method: "POST", timeout: 180000 })
+      .then((data) => {
+        finish(
+          decorateResult(
+            Object.assign({}, task, {
+              status: data.accepted ? "accepted" : "rejected",
+              photo: data.photo,
+              accepted: data.accepted,
+              latencyMs: data.latencyMs,
+            }),
+          ),
+        );
+      })
+      .catch((err) => {
+        finish(
+          decorateResult(
+            Object.assign({}, task, { status: "error", error: err.message || "观看失败" }),
+          ),
+        );
+      });
+  },
+
+  refreshSummary() {
+    const results = this.data.results;
+    this.setData({
+      summaryStats: {
+        total: results.length,
+        accepted: results.filter((r) => r.accepted).length,
+        rejected: results.filter((r) => r.status === "rejected").length,
+        failed: results.filter((r) => r.status === "error").length,
+      },
+    });
   },
 
   onOpenPhoto(e) {

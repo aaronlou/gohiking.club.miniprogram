@@ -5,7 +5,7 @@
 
   <view wx:elif="{{loadError}}" class="loading">
     <view>{{loadError}}</view>
-    <button class="btn btn--outline btn--sm" style="margin-top: 24rpx;" bindtap="onRetry">再试一次</button>
+    <button hover-class="btn-hover" class="btn btn--outline btn--sm" style="margin-top: 24rpx;" bindtap="onRetry">再试一次</button>
   </view>
 
   <block wx:else>
@@ -18,7 +18,7 @@
         </text>
         <text class="mono">{{members.length}} 位成员 · {{requests.length}} 份待确认</text>
       </view>
-      <button class="btn btn--outline btn--sm" bindtap="onToggleStatus">
+      <button hover-class="btn-hover" class="btn btn--outline btn--sm" bindtap="onToggleStatus">
         {{activity.status === 'open' ? '结束报名' : '重新开放报名'}}
       </button>
     </view>
@@ -43,8 +43,8 @@
             <text>“{{item.note}}”</text>
           </view>
           <view class="request-card__actions">
-            <button class="btn btn--ink btn--sm" data-id="{{item.id}}" bindtap="onApprove">通过</button>
-            <button class="btn btn--outline btn--sm" data-id="{{item.id}}" bindtap="onReject">婉拒</button>
+            <button hover-class="btn-hover" class="btn btn--ink btn--sm" data-id="{{item.id}}" bindtap="onApprove">通过</button>
+            <button hover-class="btn-hover" class="btn btn--outline btn--sm" data-id="{{item.id}}" bindtap="onReject">婉拒</button>
           </view>
         </view>
       </block>
@@ -59,7 +59,7 @@
       </view>
       <view class="invite-row">
         <input class="input invite-input" value="{{inviteUsername}}" bindinput="onInviteInput" placeholder="输入用户名" placeholder-class="ph" />
-        <button class="btn btn--signal btn--sm invite-btn {{submitting ? 'btn--disabled' : ''}}" bindtap="onInvite">邀请</button>
+        <button hover-class="btn-hover" class="btn btn--signal btn--sm invite-btn {{submitting ? 'btn--disabled' : ''}}" bindtap="onInvite">邀请</button>
       </view>
       <text class="form-help">被邀请的人会直接加入，不需要确认。</text>
     </view>

@@ -18,12 +18,12 @@
   flex-direction: column;
   align-items: center;
   gap: 8rpx;
-  color: #5f665a;
+  color: var(--ink-mute, #5f665a);
   position: relative;
 }
 
 .dock__item.is-active {
-  color: #202b22;
+  color: var(--forest, #202b22);
 }
 
 .dock__text {
@@ -41,7 +41,7 @@
   top: -14rpx;
   width: 28rpx;
   height: 4rpx;
-  background: #df5a34;
+  background: var(--signal, #df5a34);
 }
 
 /* 中央「放进」按钮 */
@@ -53,7 +53,7 @@
   width: 104rpx;
   height: 104rpx;
   border-radius: 50%;
-  background: #df5a34;
+  background: var(--signal, #df5a34);
   border: 6rpx solid #fbf8f1;
   box-shadow: 0 8rpx 24rpx rgba(223, 90, 52, 0.4);
   display: flex;
@@ -71,7 +71,7 @@
 .dock__primary-plus::after {
   content: "";
   position: absolute;
-  background: #fffdf7;
+  background: var(--white, #fffdf7);
   border-radius: 2rpx;
 }
 
@@ -92,7 +92,7 @@
 }
 
 .dock__item.is-primary .dock__text {
-  color: #b94525;
+  color: var(--signal-deep, #b94525);
   font-weight: 600;
 }
 
@@ -110,6 +110,11 @@
 
 .dock__item.is-active .dock__icon--0 {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23202b22' stroke-width='1.8'%3E%3Cpath d='M3 17 L9 7 L13 13 L16 9 L21 17 Z'/%3E%3C/svg%3E");
+}
+
+/* 组件内点击态（app.wxss 不进入组件作用域） */
+.is-hover-soft {
+  opacity: 0.72;
 }
 
 .dock__icon--1 {

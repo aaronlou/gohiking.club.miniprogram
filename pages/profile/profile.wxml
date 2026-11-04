@@ -7,7 +7,7 @@
   <view class="form">
     <view class="field">
       <text class="field__label required">称呼</text>
-      <input class="input" value="{{name}}" bindinput="onName" placeholder="档案里怎么称呼你" placeholder-class="ph" maxlength="30" />
+      <input class="input" value="{{name}}" bindinput="onName" confirm-type="next" cursor-spacing="24" placeholder="档案里怎么称呼你" placeholder-class="ph" maxlength="30" />
     </view>
 
     <view class="field">
@@ -18,12 +18,12 @@
 
     <view class="field">
       <text class="field__label">常从哪里出发（可选）</text>
-      <input class="input" value="{{homeBase}}" bindinput="onHomeBase" placeholder="例如：杭州" placeholder-class="ph" maxlength="40" />
+      <input class="input" value="{{homeBase}}" bindinput="onHomeBase" confirm-type="done" cursor-spacing="24" placeholder="例如：杭州" placeholder-class="ph" maxlength="40" />
     </view>
 
     <view class="field">
       <text class="field__label">一句关于你和山的话（可选）</text>
-      <textarea class="textarea" value="{{bio}}" bindinput="onBio" placeholder="写在档案里的自我介绍" placeholder-class="ph" maxlength="280" />
+      <textarea class="textarea" value="{{bio}}" bindinput="onBio" cursor-spacing="24" adjust-position="{{true}}" placeholder="写在档案里的自我介绍" placeholder-class="ph" maxlength="280" />
     </view>
 
     <view class="field">
@@ -31,7 +31,7 @@
       <input class="input input--readonly" value="{{email}}" disabled />
     </view>
 
-    <button class="btn btn--signal btn--full {{submitting ? 'btn--disabled' : ''}}" bindtap="onSubmit" disabled="{{submitting}}">
+    <button hover-class="btn-hover" class="btn btn--signal btn--full {{submitting ? 'btn--disabled' : ''}}" bindtap="onSubmit" disabled="{{submitting}}">
       {{submitting ? '正在保存…' : '保存资料'}}
     </button>
   </view>

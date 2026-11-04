@@ -1,5 +1,5 @@
 .page {
-  padding: 48rpx 40rpx 120rpx;
+  padding: 48rpx 40rpx calc(80rpx + env(safe-area-inset-bottom));
 }
 
 .head__title {

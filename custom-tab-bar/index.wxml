@@ -2,7 +2,7 @@
   <view
     wx:for="{{list}}"
     wx:key="path"
-    class="dock__item {{selected === index ? 'is-active' : ''}} {{item.primary ? 'is-primary' : ''}}"
+    hover-class="is-hover-soft" class="dock__item {{selected === index ? 'is-active' : ''}} {{item.primary ? 'is-primary' : ''}}"
     data-path="{{item.path}}"
     bindtap="onTap"
   >

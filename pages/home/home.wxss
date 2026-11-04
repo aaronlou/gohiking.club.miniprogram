@@ -1,5 +1,5 @@
 .page {
-  padding-bottom: 200rpx;
+  padding-bottom: calc(180rpx + env(safe-area-inset-bottom));
 }
 
 /* ---------- Hero ---------- */

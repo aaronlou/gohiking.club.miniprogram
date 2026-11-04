@@ -1,5 +1,5 @@
 .page {
-  padding-bottom: 200rpx;
+  padding-bottom: calc(180rpx + env(safe-area-inset-bottom));
 }
 
 .hero-quiet {
@@ -114,11 +114,15 @@
   display: flex;
   flex-direction: column;
   gap: 4rpx;
+  min-width: 0;
 }
 
 .author-card__name {
   font-size: 30rpx;
   font-weight: 600;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .author-card__stats {

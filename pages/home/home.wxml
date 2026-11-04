@@ -28,8 +28,8 @@
       </view>
 
       <view class="hero__actions">
-        <button class="btn btn--signal hero__cta" bindtap="onUpload">放进一张照片</button>
-        <button class="btn btn--outline" bindtap="onGoArchive">去看看公共档案</button>
+        <button hover-class="btn-hover" class="btn btn--signal hero__cta" bindtap="onUpload">放进一张照片</button>
+        <button hover-class="btn-hover" class="btn btn--outline" bindtap="onGoArchive">去看看公共档案</button>
       </view>
     </view>
   </view>
@@ -41,13 +41,20 @@
     </view>
   </view>
 
-  <view wx:if="{{loading}}" class="loading">
-    <view class="loading-dots"><i></i><i></i><i></i></view>正在走进山野…
+  <view wx:if="{{loading}}" class="skeleton">
+    <view class="sk-block sk-line--lg"></view>
+    <view class="sk-block sk-line sk-line--short"></view>
+    <view class="sk-grid">
+      <view class="sk-block sk-cell"></view>
+      <view class="sk-block sk-cell"></view>
+      <view class="sk-block sk-cell"></view>
+      <view class="sk-block sk-cell"></view>
+    </view>
   </view>
 
   <view wx:elif="{{loadError}}" class="loading">
     <view>{{loadError}}</view>
-    <button class="btn btn--outline btn--sm" style="margin-top: 24rpx;" bindtap="onRetry">再试一次</button>
+    <button hover-class="btn-hover" class="btn btn--outline btn--sm" style="margin-top: 24rpx;" bindtap="onRetry">再试一次</button>
   </view>
 
   <block wx:else>
@@ -59,7 +66,7 @@
       </view>
       <scroll-view class="week-scroll" scroll-x enhanced show-scrollbar="{{false}}">
         <view class="week-scroll__inner">
-          <view class="week-card" wx:for="{{thisWeek}}" wx:key="id" data-id="{{item.id}}" bindtap="onPhotoTap">
+          <view hover-class="is-hover" class="week-card" wx:for="{{thisWeek}}" wx:key="id" data-id="{{item.id}}" bindtap="onPhotoTap">
             <image class="week-card__img" src="{{item.thumb}}" mode="aspectFill" lazy-load />
             <view class="week-card__caption">
               <text class="week-card__title">{{item.title || '无题'}}</text>
@@ -73,7 +80,7 @@
         <view
           wx:for="{{themes}}"
           wx:key="id"
-          class="chip"
+          hover-class="is-hover-soft" class="chip"
           data-id="{{item.id}}"
           bindtap="onThemeChip"
         >

@@ -1,5 +1,6 @@
 .page {
-  padding-bottom: 220rpx;
+  /* 底部 Dock + 安全区 */
+  padding-bottom: calc(200rpx + env(safe-area-inset-bottom));
 }
 
 .login-hero {
@@ -225,6 +226,9 @@
 .photo-row__meta {
   font-size: 20rpx;
   color: var(--ink-mute);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .photo-row__summary {

@@ -1,11 +1,22 @@
 <view class="page">
+  <!-- 未登录 -->
+  <block wx:if="{{!loggedIn}}">
+    <view class="login-hero">
+      <view class="eyebrow"><view class="dot"></view>MY ACTIVITIES / 我的活动</view>
+      <h1 class="serif">先登录，再清点你的同行</h1>
+      <p>登录后可以看到你发起与参与的活动，以及待你确认的入队申请。</p>
+      <button hover-class="btn-hover" class="btn btn--signal" hover-class="btn-hover" bindtap="onLogin">登录 / 注册</button>
+    </view>
+  </block>
+
+  <block wx:else>
   <view wx:if="{{loading}}" class="loading">
     <view class="loading-dots"><i></i><i></i><i></i></view>正在清点活动…
   </view>
 
   <view wx:elif="{{loadError}}" class="loading">
     <view>{{loadError}}</view>
-    <button class="btn btn--outline btn--sm" style="margin-top: 24rpx;" bindtap="onRetry">再试一次</button>
+    <button hover-class="btn-hover" class="btn btn--outline btn--sm" style="margin-top: 24rpx;" bindtap="onRetry">再试一次</button>
   </view>
 
   <block wx:else>
@@ -16,13 +27,13 @@
         <text class="mono">{{pendingRequests.length}} 份</text>
       </view>
       <view
-        class="request-row"
+        hover-class="is-hover" class="request-row"
         wx:for="{{pendingRequests}}"
         wx:key="member.id"
         data-slug="{{item.activity.slug}}"
         bindtap="onManage"
       >
-        <view class="request-row__avatar">{{item.member.user.name[0] || '山'}}</view>
+        <view class="request-row__avatar">{{item.member.user.name ? item.member.user.name[0] : '' || '山'}}</view>
         <view class="request-row__body">
           <text class="request-row__title">{{item.member.user.name}} 申请加入《{{item.activity.title}}》</text>
           <text class="request-row__meta mono">{{item.member.appliedAt}}</text>
@@ -50,8 +61,8 @@
             <text wx:if="{{item.pendingCount > 0}}" class="activity-card__pending">{{item.pendingCount}} 份待确认</text>
           </view>
           <view class="activity-card__actions">
-            <button class="btn btn--outline btn--sm" data-slug="{{item.slug}}" bindtap="onManage">管理</button>
-            <button class="btn btn--paper btn--sm" data-slug="{{item.slug}}" bindtap="onOpen">打开</button>
+            <button hover-class="btn-hover" class="btn btn--outline btn--sm" data-slug="{{item.slug}}" bindtap="onManage">管理</button>
+            <button hover-class="btn-hover" class="btn btn--paper btn--sm" data-slug="{{item.slug}}" bindtap="onOpen">打开</button>
           </view>
         </view>
       </block>
@@ -86,7 +97,8 @@
     </view>
 
     <view class="section">
-      <button class="btn btn--signal btn--full" bindtap="onNew">发起一次活动</button>
+      <button hover-class="btn-hover" class="btn btn--signal btn--full" bindtap="onNew">发起一次活动</button>
     </view>
+  </block>
   </block>
 </view>

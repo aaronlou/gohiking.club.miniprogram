@@ -5,7 +5,7 @@
       <view class="eyebrow"><view class="dot"></view>MY ARCHIVE / 我的档案</view>
       <h1 class="serif">你的山野，也在档案里</h1>
       <p>登录后可以管理照片、活动与资料；上传的每一张照片都会被认真观看。</p>
-      <button class="btn btn--signal" bindtap="onLogin">登录 / 注册</button>
+      <button hover-class="btn-hover" class="btn btn--signal" bindtap="onLogin">登录 / 注册</button>
     </view>
   </block>
 
@@ -22,13 +22,18 @@
       </view>
     </view>
 
-    <view wx:if="{{loading}}" class="loading">
-      <view class="loading-dots"><i></i><i></i><i></i></view>正在整理你的档案…
+    <view wx:if="{{loading}}" class="skeleton">
+      <view class="sk-block sk-row"></view>
+      <view class="sk-block sk-line--lg"></view>
+      <view class="sk-grid">
+        <view class="sk-block sk-cell"></view>
+        <view class="sk-block sk-cell"></view>
+      </view>
     </view>
 
     <view wx:elif="{{loadError}}" class="loading">
       <view>{{loadError}}</view>
-      <button class="btn btn--outline btn--sm" style="margin-top: 24rpx;" bindtap="onRetry">再试一次</button>
+      <button hover-class="btn-hover" class="btn btn--outline btn--sm" style="margin-top: 24rpx;" bindtap="onRetry">再试一次</button>
     </view>
 
     <block wx:else>
@@ -55,9 +60,9 @@
 
       <!-- 快捷入口 -->
       <view class="quick-row">
-        <button class="btn btn--signal btn--sm" bindtap="onUpload">放进一张照片</button>
-        <button class="btn btn--outline btn--sm" bindtap="onMyActivities">活动管理</button>
-        <button class="btn btn--outline btn--sm" bindtap="onMyPublicProfile">公开档案</button>
+        <button hover-class="btn-hover" class="btn btn--signal btn--sm" bindtap="onUpload">放进一张照片</button>
+        <button hover-class="btn-hover" class="btn btn--outline btn--sm" bindtap="onMyActivities">活动管理</button>
+        <button hover-class="btn-hover" class="btn btn--outline btn--sm" bindtap="onMyPublicProfile">公开档案</button>
       </view>
 
       <!-- 观看中断提醒 -->
@@ -73,7 +78,7 @@
           <text class="mono">CHAPTERS</text>
         </view>
         <view class="chapter-list">
-          <view class="chapter-card" wx:for="{{chapters}}" wx:key="index" data-slug="{{item.activity.slug}}" bindtap="onOpenChapter">
+          <view hover-class="is-hover" class="chapter-card" wx:for="{{chapters}}" wx:key="index" data-slug="{{item.activity.slug}}" bindtap="onOpenChapter">
             <view class="chapter-card__head">
               <text class="badge {{item.activity.phase === 'upcoming' ? 'badge--signal' : ''}}">{{item.activity.phaseLabel}}</text>
               <text class="mono">{{item.role === 'host' ? '我发起' : '我参与'}}</text>
@@ -99,7 +104,7 @@
           <view
             wx:for="{{filters}}"
             wx:key="id"
-            class="filter-tab {{filter === item.id ? 'is-active' : ''}}"
+            hover-class="is-hover-soft" class="filter-tab {{filter === item.id ? 'is-active' : ''}}"
             data-id="{{item.id}}"
             bindtap="onFilter"
           >{{item.label}} {{counts[item.id] || 0}}</view>
@@ -135,7 +140,7 @@
       </view>
 
       <view class="shell">
-        <button class="btn btn--paper btn--full" bindtap="onSignOut">退出登录</button>
+        <button hover-class="btn-hover" class="btn btn--paper btn--full" bindtap="onSignOut">退出登录</button>
       </view>
     </block>
   </block>

@@ -122,15 +122,26 @@ function groupByTheme(photos) {
 function groupByMonth(photos) {
   const groups = new Map();
   photos.forEach((photo) => {
-    const d = new Date(photoDate(photo));
-    const key = `${d.getUTCFullYear()}-${pad2(d.getUTCMonth() + 1)}`;
+    const raw = photoDate(photo);
+    const d = raw ? new Date(raw) : null;
+    const valid = d && !isNaN(d.getTime());
+    // 与按拍摄日分组保持同一口径：本地时区；没有日期的照片单独归入「未记录」
+    const key = valid ? `${d.getFullYear()}-${pad2(d.getMonth() + 1)}` : "unknown";
     const list = groups.get(key) || [];
     list.push(photo);
     groups.set(key, list);
   });
   return Array.from(groups.entries())
-    .sort((a, b) => (a[0] < b[0] ? 1 : -1))
+    .sort((a, b) => {
+      if (a[0] === "unknown") return 1;
+      if (b[0] === "unknown") return -1;
+      return a[0] < b[0] ? 1 : -1;
+    })
     .map(([key, list]) => {
+      if (key === "unknown") {
+        list.sort((a, b) => new Date(photoDate(b) || 0) - new Date(photoDate(a) || 0));
+        return { key, label: "日期未记录", latin: "N.D.", photos: list };
+      }
       const [year, month] = key.split("-");
       list.sort((a, b) => new Date(photoDate(b)) - new Date(photoDate(a)));
       return { key, label: `${year} 年 ${Number(month)} 月`, latin: `${year}.${month}`, photos: list };
@@ -165,8 +176,9 @@ function groupByAuthor(photos) {
 function groupActivityPhotosByDay(photos) {
   const groups = new Map();
   photos.forEach((photo) => {
-    const d = new Date(photo.takenAt || photo.createdAt);
-    const label = `${d.getMonth() + 1} 月 ${d.getDate()} 日`;
+    const raw = photo.takenAt || photo.createdAt;
+    const d = raw ? new Date(raw) : null;
+    const label = d && !isNaN(d.getTime()) ? `${d.getMonth() + 1} 月 ${d.getDate()} 日` : "日期未记录";
     const list = groups.get(label) || [];
     list.push(photo);
     groups.set(label, list);

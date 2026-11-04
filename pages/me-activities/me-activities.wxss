@@ -1,5 +1,5 @@
 .page {
-  padding: 40rpx 40rpx 120rpx;
+  padding: 40rpx 40rpx calc(80rpx + env(safe-area-inset-bottom));
 }
 
 .section {
@@ -113,4 +113,24 @@
   display: flex;
   gap: 16rpx;
   margin-top: 18rpx;
+}
+
+/* 未登录引导（与 me / upload 页同一套） */
+.login-hero {
+  padding: 120rpx 60rpx;
+  text-align: center;
+}
+
+.login-hero h1 {
+  font-size: 44rpx;
+  margin: 24rpx 0 20rpx;
+  color: var(--forest);
+}
+
+.login-hero p {
+  font-size: 26rpx;
+  color: var(--ink-mute);
+  line-height: 1.8;
+  margin-bottom: 48rpx;
+  text-align: center;
 }

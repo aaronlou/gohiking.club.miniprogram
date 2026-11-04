@@ -1,5 +1,6 @@
 .page {
-  padding-bottom: 220rpx;
+  /* 底部 Dock ≈ 104rpx + 中央按钮上探 56rpx，再挂接机型安全区 */
+  padding-bottom: calc(200rpx + env(safe-area-inset-bottom));
 }
 
 .login-hero {
@@ -96,6 +97,9 @@
   font-weight: 600;
   flex: 1;
   min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .mode-tabs {
@@ -137,6 +141,39 @@
   font-size: 30rpx;
   color: var(--ink-soft);
   font-family: Georgia, "Songti SC", serif;
+}
+
+/* 档案式装饰角标 */
+.dropzone__corners {
+  position: absolute;
+  top: 14rpx;
+  left: 14rpx;
+  right: 14rpx;
+  bottom: 14rpx;
+  pointer-events: none;
+}
+
+.dropzone__corners::before,
+.dropzone__corners::after {
+  content: "";
+  position: absolute;
+  width: 28rpx;
+  height: 28rpx;
+  border: 0 solid var(--sage);
+}
+
+.dropzone__corners::before {
+  top: 0;
+  left: 0;
+  border-top-width: 2rpx;
+  border-left-width: 2rpx;
+}
+
+.dropzone__corners::after {
+  bottom: 0;
+  right: 0;
+  border-bottom-width: 2rpx;
+  border-right-width: 2rpx;
 }
 
 .dropzone__hint {
@@ -233,6 +270,7 @@
 
 .compose__row {
   display: flex;
+  flex-wrap: wrap;
   gap: 24rpx;
 }
 
@@ -492,4 +530,13 @@
   display: flex;
   flex-direction: column;
   gap: 20rpx;
+}
+
+.compose__submit {
+  position: fixed;
+  left: 40rpx;
+  right: 40rpx;
+  bottom: calc(24rpx + env(safe-area-inset-bottom));
+  z-index: 20;
+  box-shadow: 0 8rpx 32rpx rgba(27, 33, 26, 0.14);
 }

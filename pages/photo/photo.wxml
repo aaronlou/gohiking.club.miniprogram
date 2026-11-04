@@ -5,7 +5,7 @@
 
   <view wx:elif="{{loadError}}" class="loading">
     <view>{{loadError}}</view>
-    <button class="btn btn--outline btn--sm" style="margin-top: 24rpx;" bindtap="onRetry">再试一次</button>
+    <button hover-class="btn-hover" class="btn btn--outline btn--sm" style="margin-top: 24rpx;" bindtap="onRetry">再试一次</button>
   </view>
 
   <block wx:else>
@@ -17,8 +17,11 @@
     </view>
     <view wx:if="{{isPending}}" class="banner banner--pending">
       <text class="mono">IN REVIEW / 正在观看</text>
-      <p>我们还没有看完这张照片。回到工作室可以继续，也可以让它先安静地待着。</p>
-      <button class="btn btn--outline btn--sm" bindtap="onBackStudio">回到工作室</button>
+      <p>我们还没有看完这张照片。{{isOwner && photo.status === 'failed' ? '观看被中断了，可以现在请山野再看一次。' : '回到工作室可以继续，也可以让它先安静地待着。'}}</p>
+      <view class="banner__actions">
+        <button wx:if="{{isOwner && photo.status === 'failed'}}" class="btn btn--signal btn--sm" hover-class="btn-hover" bindtap="onRetryEvaluate">重新观看</button>
+        <button hover-class="btn-hover" class="btn btn--outline btn--sm" hover-class="btn-hover" bindtap="onBackStudio">回到工作室</button>
+      </view>
     </view>
 
     <!-- 面包屑 -->
@@ -92,7 +95,7 @@
 
       <!-- 作者 -->
       <view class="author-row" bindtap="onOpenAuthor">
-        <view class="author-row__avatar">{{photo.author.name[0] || '山'}}</view>
+        <view class="author-row__avatar">{{photo.author.name ? photo.author.name[0] : '' || '山'}}</view>
         <view class="author-row__info">
           <text class="author-row__name serif">{{photo.author.name}}</text>
           <text class="mono">@{{photo.author.username}}{{photo.author.homeBase ? ' · ' + photo.author.homeBase : ''}}</text>
@@ -128,7 +131,7 @@
 
       <!-- 删除 -->
       <view wx:if="{{isOwner}}" class="owner-actions">
-        <button class="btn btn--paper btn--sm" bindtap="onDelete">删除这张照片</button>
+        <button hover-class="btn-hover" class="btn btn--paper btn--sm" bindtap="onDelete">删除这张照片</button>
       </view>
 
       <!-- 观看手记 -->

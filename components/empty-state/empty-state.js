@@ -1,4 +1,8 @@
 Component({
+  options: {
+    // 允许 app.wxss 的 .btn 系列样式进入组件，否则空态按钮会退回原生默认样式
+    styleIsolation: "apply-shared",
+  },
   properties: {
     title: { type: String, value: "正在等第一张山野" },
     desc: { type: String, value: "" },

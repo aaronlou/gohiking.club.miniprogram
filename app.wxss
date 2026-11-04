@@ -296,6 +296,75 @@ page {
   margin-bottom: 32rpx;
 }
 
+/* ---------- 点击态（配合 hover-class） ---------- */
+.btn-hover {
+  opacity: 0.68;
+}
+
+.is-hover {
+  opacity: 0.72;
+}
+
+.is-hover-soft {
+  background: rgba(27, 33, 26, 0.05);
+}
+
+/* ---------- 骨架屏 ---------- */
+.skeleton {
+  padding: 56rpx 40rpx;
+}
+
+.sk-block {
+  background: linear-gradient(
+    90deg,
+    rgba(27, 33, 26, 0.07) 25%,
+    rgba(27, 33, 26, 0.13) 37%,
+    rgba(27, 33, 26, 0.07) 63%
+  );
+  background-size: 400% 100%;
+  animation: sk-shimmer 1.4s ease infinite;
+  border-radius: var(--radius);
+}
+
+.sk-line {
+  height: 26rpx;
+  margin-bottom: 20rpx;
+}
+
+.sk-line--lg {
+  height: 52rpx;
+  width: 62%;
+  margin-bottom: 28rpx;
+}
+
+.sk-line--short {
+  width: 38%;
+}
+
+.sk-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20rpx;
+}
+
+.sk-cell {
+  height: 220rpx;
+}
+
+.sk-row {
+  height: 120rpx;
+  margin-bottom: 20rpx;
+}
+
+@keyframes sk-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
 /* ---------- 加载 ---------- */
 .loading {
   padding: 64rpx;

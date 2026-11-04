@@ -21,6 +21,7 @@ Page({
     likeCount: 0,
     likeSubmitting: false,
     publishSubmitting: false,
+    retrying: false,
     metaList: [],
   },
 
@@ -90,7 +91,10 @@ Page({
       .catch((err) => {
         this.setData({ liked: !liked, likeCount: this.data.likeCount - (liked ? 1 : -1), likeSubmitting: false });
         if (err.statusCode === 401) {
-          wx.navigateTo({ url: "/pages/login/login?next=/pages/photo/photo?id=" + this.photoId });
+          // 全局拦截通常会先接管并跳登录；这里只在本地会话仍在时兜底
+          if (api.getUser()) {
+            wx.navigateTo({ url: "/pages/login/login?next=/pages/photo/photo?id=" + this.photoId });
+          }
         } else {
           wx.showToast({ title: err.message || "没有成功", icon: "none" });
         }
@@ -116,6 +120,7 @@ Page({
             .del("/api/photos/" + this.photoId + "/publish")
             .then(() => {
               wx.showToast({ title: "已收回", icon: "success" });
+              getApp().globalData.archiveDirty = true;
               this.fetch();
             })
             .catch((err) => wx.showToast({ title: err.message || "没有成功", icon: "none" }))
@@ -140,6 +145,7 @@ Page({
             } else {
               wx.showToast({ title: "这次还差一点，照片仍然留在活动里", icon: "none" });
             }
+            getApp().globalData.archiveDirty = true;
             this.fetch();
           })
           .catch((err) => {
@@ -187,6 +193,26 @@ Page({
 
   onRetry() {
     this.fetch();
+  },
+
+  /* 观看中断的照片：本人可重新请山野观看 */
+  onRetryEvaluate() {
+    if (this.data.retrying || !this.data.isOwner) return;
+    this.setData({ retrying: true });
+    wx.showLoading({ title: "山野正在观看…", mask: true });
+    api
+      .request("/api/photos/" + this.photoId + "/evaluate", { method: "POST", timeout: 180000 })
+      .then(() => {
+        wx.hideLoading();
+        this.setData({ retrying: false });
+        wx.showToast({ title: "观看完成", icon: "success" });
+        this.fetch();
+      })
+      .catch((err) => {
+        wx.hideLoading();
+        this.setData({ retrying: false });
+        wx.showToast({ title: err.message || "观看没有完成", icon: "none" });
+      });
   },
 
   onBackStudio() {

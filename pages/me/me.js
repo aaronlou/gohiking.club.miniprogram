@@ -149,6 +149,7 @@ Page({
           .del("/api/photos/" + id)
           .then(() => {
             wx.showToast({ title: "已删除", icon: "success" });
+            getApp().globalData.archiveDirty = true;
             this.fetch();
           })
           .catch((err) => wx.showToast({ title: err.message || "删除失败", icon: "none" }));
@@ -158,7 +159,26 @@ Page({
 
   onRetryEvaluate(e) {
     const id = e.currentTarget.dataset.id;
-    wx.navigateTo({ url: "/pages/photo/photo?id=" + id });
+    wx.showModal({
+      title: "重新观看",
+      content: "我们会重新请视觉模型观看这张照片，通常需要 10–40 秒。",
+      confirmColor: "#df5a34",
+      success: (res) => {
+        if (!res.confirm) return;
+        wx.showLoading({ title: "山野正在观看…", mask: true });
+        api
+          .request("/api/photos/" + id + "/evaluate", { method: "POST", timeout: 180000 })
+          .then(() => {
+            wx.hideLoading();
+            wx.showToast({ title: "观看完成", icon: "success" });
+            this.fetch();
+          })
+          .catch((err) => {
+            wx.hideLoading();
+            wx.showToast({ title: err.message || "观看没有完成", icon: "none" });
+          });
+      },
+    });
   },
 
   onMyActivities() {

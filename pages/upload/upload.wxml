@@ -4,7 +4,7 @@
     <view class="eyebrow"><view class="dot"></view>ADD A PHOTO / 放进</view>
     <h1 class="serif">把这一趟山野，放进档案</h1>
     <p>每一张照片都必须先属于一次已加入的活动。上传后，由视觉模型认真观看，写下一份中文手记；3 分以上进入活动相册。</p>
-    <button class="btn btn--signal" bindtap="onLogin">登录后开始</button>
+    <button hover-class="btn-hover" class="btn btn--signal" bindtap="onLogin">登录后开始</button>
   </view>
 
   <!-- 第一步：选择活动 -->
@@ -15,7 +15,7 @@
       <p class="gate__desc">照片先属于一次真实的徒步。只有你已加入的活动可以放进照片。</p>
 
       <view class="gate__list">
-        <view class="gate-item" wx:for="{{activities}}" wx:key="id" data-id="{{item.id}}" bindtap="onSelectActivity">
+        <view hover-class="is-hover" class="gate-item" wx:for="{{activities}}" wx:key="id" data-id="{{item.id}}" bindtap="onSelectActivity">
           <view class="gate-item__body">
             <text class="gate-item__title serif">{{item.title}}</text>
             <text class="gate-item__meta mono">{{item.dateLabel}}{{item.status === 'closed' ? ' · 报名已结束' : ''}}</text>
@@ -45,12 +45,12 @@
 
       <!-- 模式 -->
       <view class="mode-tabs">
-        <view class="mode-tab {{mode === 'single' ? 'is-active' : ''}}" data-mode="single" bindtap="onMode">单张</view>
-        <view class="mode-tab {{mode === 'batch' ? 'is-active' : ''}}" data-mode="batch" bindtap="onMode">批量 · 最多 9 张</view>
+        <view hover-class="is-hover-soft" class="mode-tab {{mode === 'single' ? 'is-active' : ''}}" data-mode="single" bindtap="onMode">单张</view>
+        <view hover-class="is-hover-soft" class="mode-tab {{mode === 'batch' ? 'is-active' : ''}}" data-mode="batch" bindtap="onMode">批量 · 最多 9 张</view>
       </view>
 
       <!-- 选图 -->
-      <view class="dropzone" bindtap="chooseImages">
+      <view hover-class="is-hover-soft" class="dropzone" bindtap="chooseImages">
         <block wx:if="{{items.length === 0}}">
           <view class="dropzone__corners"></view>
           <text class="dropzone__title">点这里选择照片</text>
@@ -63,7 +63,7 @@
               <text class="chosen__index mono">{{index + 1 < 10 ? '0' : ''}}{{index + 1}}</text>
               <view class="chosen__remove" data-index="{{item.index}}" catchtap="removeImage">×</view>
             </view>
-            <view wx:if="{{items.length < 9}}" class="chosen chosen--add" bindtap="chooseImages">
+            <view wx:if="{{items.length < 9}}" hover-class="is-hover-soft" class="chosen chosen--add" bindtap="chooseImages">
               <text>＋</text>
             </view>
           </view>
@@ -73,12 +73,12 @@
       <!-- 表单 -->
       <view class="field">
         <text class="field__label {{mode === 'batch' ? '' : 'required'}}">{{mode === 'batch' ? '组名（留空自动编号）' : '标题'}}</text>
-        <input class="input" value="{{title}}" bindinput="onTitle" placeholder="{{mode === 'batch' ? '例如：武功山之行' : '给这张照片一个名字'}}" placeholder-class="input-ph" maxlength="80" />
+        <input class="input" value="{{title}}" bindinput="onTitle" confirm-type="done" cursor-spacing="24" placeholder="{{mode === 'batch' ? '例如：武功山之行' : '给这张照片一个名字'}}" placeholder-class="input-ph" maxlength="80" />
       </view>
 
       <view class="field">
         <text class="field__label">{{mode === 'batch' ? '共同说明（可选）' : '说明（可选）'}}</text>
-        <textarea class="textarea" value="{{caption}}" bindinput="onCaption" placeholder="拍下它时，山野正在发生什么" placeholder-class="input-ph" maxlength="600" />
+        <textarea class="textarea" value="{{caption}}" bindinput="onCaption" cursor-spacing="24" adjust-position="{{true}}" placeholder="拍下它时，山野正在发生什么" placeholder-class="input-ph" maxlength="600" />
       </view>
 
       <view class="field">
@@ -87,7 +87,7 @@
           <view
             wx:for="{{themes}}"
             wx:key="id"
-            class="theme-option {{theme === item.id ? 'is-active' : ''}}"
+            hover-class="is-hover-soft" class="theme-option {{theme === item.id ? 'is-active' : ''}}"
             data-id="{{item.id}}"
             bindtap="onTheme"
           >
@@ -100,7 +100,7 @@
       <view class="compose__row">
         <view class="field compose__half">
           <text class="field__label">拍摄地点（可选）</text>
-          <input class="input" value="{{locationName}}" bindinput="onLocation" placeholder="例如：浙江 · 临安" placeholder-class="input-ph" maxlength="80" />
+          <input class="input" value="{{locationName}}" bindinput="onLocation" confirm-type="done" cursor-spacing="24" placeholder="例如：浙江 · 临安" placeholder-class="input-ph" maxlength="80" />
         </view>
         <view class="field compose__half">
           <text class="field__label">拍摄日期（可选）</text>
@@ -115,7 +115,7 @@
         <p>活动照片默认只对同行者可见。想放进公共档案，需要观看达到 3 分后，在照片页由你自己决定。</p>
       </view>
 
-      <button class="btn btn--signal btn--full compose__submit" bindtap="onSubmit">
+      <button hover-class="btn-hover" class="btn btn--signal btn--full compose__submit" bindtap="onSubmit">
         放进这次活动（{{items.length || 0}} 张）
       </button>
     </view>
@@ -166,7 +166,7 @@
 
       <view class="result-card" wx:for="{{results}}" wx:key="id">
         <view class="result-card__imgwrap" data-url="{{item.tempPath || (item.photo ? item.photo.img : '')}}" bindtap="onPreview">
-          <image class="result-card__img" src="{{item.tempPath || (item.photo ? item.photo.img : '')}}" mode="widthFix" />
+          <image class="result-card__img" src="{{item.tempPath || (item.photo ? item.photo.thumb : '')}}" mode="widthFix" lazy-load />
           <view wx:if="{{item.photo}}" class="stamp {{item.accepted ? 'stamp--in' : 'stamp--out'}}">
             <text class="stamp__label">{{item.accepted ? '放进' : '未收录'}}</text>
             <text class="stamp__score">{{item.scoreLabel}}</text>
@@ -180,7 +180,7 @@
           <view class="result-card__title serif">
             {{item.photo ? item.photo.title : '这一张没有完成'}}
           </view>
-          <view wx:if="{{item.photo && item.score !== null}}" class="result-card__verdict">
+          <view wx:if="{{item.score !== null && item.status !== 'error'}}" class="result-card__verdict">
             {{item.verdict}} · {{item.scoreLabel}} / 5.0
             <text class="result-card__hint">{{item.score >= 3 ? '达到了' : '离'}} 3.0 的邀请线{{item.score >= 3 ? '' : '还差一点'}}</text>
           </view>
@@ -203,19 +203,20 @@
           </block>
 
           <view wx:if="{{item.status === 'error'}}" class="result-card__note">
-            <p>{{item.error || '观看没有完成。'}} 这张照片的观看被中断了，可以回到「我的」再试一次。</p>
+            <p>{{item.error || '观看没有完成。'}} 这张照片的观看被中断了。</p>
           </view>
 
           <view class="result-card__actions">
-            <button wx:if="{{item.photo && item.accepted}}" class="btn btn--ink btn--sm" data-id="{{item.photo.id}}" bindtap="onOpenPhoto">查看这张照片</button>
+            <button wx:if="{{item.photo && item.accepted}}" class="btn btn--ink btn--sm" hover-class="btn-hover" data-id="{{item.photo.id}}" bindtap="onOpenPhoto">查看这张照片</button>
+            <button wx:if="{{item.status === 'error'}}" class="btn btn--signal btn--sm" hover-class="btn-hover" data-index="{{index}}" bindtap="onRetryItem">再看一次</button>
           </view>
         </view>
       </view>
 
       <view class="result__foot">
-        <button class="btn btn--signal" bindtap="onAgain">再放一张</button>
-        <button class="btn btn--outline" bindtap="onBackToActivity">回到活动</button>
-        <button class="btn btn--paper" bindtap="onBackHome">回到山口</button>
+        <button hover-class="btn-hover" class="btn btn--signal" bindtap="onAgain">再放一张</button>
+        <button hover-class="btn-hover" class="btn btn--outline" bindtap="onBackToActivity">回到活动</button>
+        <button hover-class="btn-hover" class="btn btn--paper" bindtap="onBackHome">回到山口</button>
       </view>
     </view>
   </block>

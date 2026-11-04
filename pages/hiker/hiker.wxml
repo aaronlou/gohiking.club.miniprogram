@@ -5,7 +5,7 @@
 
   <view wx:elif="{{loadError}}" class="loading">
     <view>{{loadError}}</view>
-    <button class="btn btn--outline btn--sm" style="margin-top: 24rpx;" bindtap="onRetry">再试一次</button>
+    <button hover-class="btn-hover" class="btn btn--outline btn--sm" style="margin-top: 24rpx;" bindtap="onRetry">再试一次</button>
   </view>
 
   <block wx:else>

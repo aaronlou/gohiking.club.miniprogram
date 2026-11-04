@@ -39,7 +39,9 @@ Page({
       this.setData({ themeFilter: app.globalData.pendingArchiveTheme, view: "theme" });
       app.globalData.pendingArchiveTheme = null;
     }
-    if (!this._loaded) {
+    // 首次进入，或照片公开 / 收回 / 删除后（archiveDirty）自动刷新
+    if (!this._loaded || app.globalData.archiveDirty) {
+      app.globalData.archiveDirty = false;
       this._loaded = true;
       this.fetch();
     }

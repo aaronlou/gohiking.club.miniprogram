@@ -37,7 +37,8 @@ function saveCookiesFromHeader(header) {
     const value = pair.slice(eq + 1).trim();
     if (!name) return;
     if (name.indexOf("session_data") !== -1) return; // 短时缓存 cookie，不保存
-    jar[name] = value;
+    if (!value) delete jar[name]; // 服务器显式清除该 cookie
+    else jar[name] = value;
   });
   wx.setStorageSync(COOKIE_KEY, jar);
 }
@@ -84,6 +85,32 @@ function requireLogin(nextPath) {
 
 /* ---------- 请求 ---------- */
 
+/* 401 统一拦截：会话过期时清掉本地会话并引导重新登录。
+ * 登录 / 注册接口自身的 401（密码错误等）不走这里。 */
+let authRedirecting = false;
+
+function handleAuthExpired(path) {
+  if (String(path).indexOf("/api/auth/") !== -1) return;
+  clearAuth();
+  const app = getApp();
+  if (app && app.setUser) app.setUser(null);
+  if (authRedirecting) return;
+  authRedirecting = true;
+  setTimeout(() => {
+    authRedirecting = false;
+  }, 3000);
+  const pages = getCurrentPages();
+  const current = pages[pages.length - 1];
+  if (current && current.route === "pages/login/login") return;
+  wx.showToast({ title: "登录已过期，请重新登录", icon: "none" });
+  wx.navigateTo({
+    url: "/pages/login/login",
+    fail() {
+      wx.switchTab({ url: "/pages/home/home" });
+    },
+  });
+}
+
 function request(path, options) {
   const opts = options || {};
   const url = path.indexOf("http") === 0 ? path : getBaseUrl() + path;
@@ -103,6 +130,7 @@ function request(path, options) {
         if (res.statusCode >= 200 && res.statusCode < 300) {
           resolve(res.data);
         } else {
+          if (res.statusCode === 401) handleAuthExpired(path);
           const data = res.data && typeof res.data === "object" ? res.data : {};
           reject({
             statusCode: res.statusCode,
@@ -161,6 +189,7 @@ function uploadPhoto(filePath, formData, onProgress) {
         if (res.statusCode >= 200 && res.statusCode < 300) {
           resolve(data);
         } else {
+          if (res.statusCode === 401) handleAuthExpired("/api/photos");
           reject({
             statusCode: res.statusCode,
             code: data.code || "upload_failed",

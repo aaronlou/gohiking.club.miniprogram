@@ -11,20 +11,27 @@
       <view
         wx:for="{{views}}"
         wx:key="id"
-        class="view-tab {{view === item.id ? 'is-active' : ''}}"
+        hover-class="is-hover-soft" class="view-tab {{view === item.id ? 'is-active' : ''}}"
         data-id="{{item.id}}"
         bindtap="onSwitchView"
       >{{item.label}}</view>
     </view>
   </view>
 
-  <view wx:if="{{loading}}" class="loading">
-    <view class="loading-dots"><i></i><i></i><i></i></view>正在打开档案柜…
+  <view wx:if="{{loading}}" class="skeleton">
+    <view class="sk-block sk-line--lg"></view>
+    <view class="sk-block sk-line sk-line--short"></view>
+    <view class="sk-grid">
+      <view class="sk-block sk-cell"></view>
+      <view class="sk-block sk-cell"></view>
+      <view class="sk-block sk-cell"></view>
+      <view class="sk-block sk-cell"></view>
+    </view>
   </view>
 
   <view wx:elif="{{loadError}}" class="loading">
     <view>{{loadError}}</view>
-    <button class="btn btn--outline btn--sm" style="margin-top: 24rpx;" bindtap="onRetry">再试一次</button>
+    <button hover-class="btn-hover" class="btn btn--outline btn--sm" style="margin-top: 24rpx;" bindtap="onRetry">再试一次</button>
   </view>
 
   <block wx:else>
@@ -34,14 +41,14 @@
         <view
           wx:for="{{themes}}"
           wx:key="id"
-          class="chip {{themeFilter === item.id ? 'chip--active' : ''}}"
+          hover-class="is-hover-soft" class="chip {{themeFilter === item.id ? 'chip--active' : ''}}"
           data-id="{{item.id}}"
           bindtap="onThemeFilter"
         >
           <view class="chip-dot" style="background: {{item.color}}"></view>
           {{item.label}}
         </view>
-        <view wx:if="{{themeFilter}}" class="chip chip--active" bindtap="onClearFilter">清除筛选 ×</view>
+        <view wx:if="{{themeFilter}}" hover-class="is-hover-soft" class="chip chip--active" bindtap="onClearFilter">清除筛选 ×</view>
       </view>
     </scroll-view>
 

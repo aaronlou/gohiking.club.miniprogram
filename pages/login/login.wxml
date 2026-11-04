@@ -13,12 +13,12 @@
 
     <view class="field">
       <text class="field__label required">邮箱</text>
-      <input class="input" type="text" value="{{email}}" bindinput="onEmail" placeholder="you@example.com" placeholder-class="ph" />
+      <input class="input" type="text" value="{{email}}" bindinput="onEmail" confirm-type="next" cursor-spacing="24" placeholder="you@example.com" placeholder-class="ph" />
     </view>
 
     <view class="field">
       <text class="field__label required">密码（至少 8 位）</text>
-      <input class="input" password value="{{password}}" bindinput="onPassword" placeholder="••••••••" placeholder-class="ph" />
+      <input class="input" password value="{{password}}" bindinput="onPassword" confirm-type="done" cursor-spacing="24" bindconfirm="onSubmit" placeholder="••••••••" placeholder-class="ph" />
     </view>
 
     <button
@@ -41,7 +41,7 @@
           <text class="field__label">API 服务器（默认 {{defaultServer}}；本地开发填 http://127.0.0.1:3000）</text>
           <input class="input" value="{{serverUrl}}" bindinput="onServerUrl" placeholder="https://gohiking.club" placeholder-class="ph" />
         </view>
-        <button class="btn btn--outline btn--sm" bindtap="onApplyServer">保存并使用此服务器</button>
+        <button hover-class="btn-hover" class="btn btn--outline btn--sm" bindtap="onApplyServer">保存并使用此服务器</button>
         <text class="form-help">切换后会清除本地登录态，请重新登录。</text>
       </block>
     </view>

@@ -5,7 +5,7 @@
 
   <view wx:elif="{{loadError}}" class="loading">
     <view>{{loadError}}</view>
-    <button class="btn btn--outline btn--sm" style="margin-top: 24rpx;" bindtap="onRetry">再试一次</button>
+    <button hover-class="btn-hover" class="btn btn--outline btn--sm" style="margin-top: 24rpx;" bindtap="onRetry">再试一次</button>
   </view>
 
   <block wx:else>
@@ -46,7 +46,7 @@
       </view>
 
       <block wx:if="{{isMember}}">
-        <button class="btn btn--signal btn--full album__upload" bindtap="onUploadToActivity">放进一张照片</button>
+        <button hover-class="btn-hover" class="btn btn--signal btn--full album__upload" bindtap="onUploadToActivity">放进一张照片</button>
         <block wx:for="{{photoGroups}}" wx:key="label" wx:for-item="group">
           <view class="album__day mono">{{group.label}}</view>
           <view class="grid-2 album__grid">
@@ -126,7 +126,7 @@
         <text class="author-row__arrow">→</text>
       </view>
       <view wx:if="{{isHost}}" class="host-actions">
-        <button class="btn btn--outline btn--sm" bindtap="onManage">管理申请与成员</button>
+        <button hover-class="btn-hover" class="btn btn--outline btn--sm" bindtap="onManage">管理申请与成员</button>
       </view>
     </view>
 
@@ -149,7 +149,7 @@
     </view>
 
     <view class="shell">
-      <button class="btn btn--paper btn--full" open-type="share">分享这次活动</button>
+      <button hover-class="btn-hover" class="btn btn--paper btn--full" open-type="share">分享这次活动</button>
     </view>
   </block>
 </view>

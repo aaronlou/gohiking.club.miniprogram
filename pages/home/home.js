@@ -24,6 +24,11 @@ Page({
     if (typeof this.getTabBar === "function" && this.getTabBar()) {
       this.getTabBar().setData({ selected: 0 });
     }
+    // 登录态变化后（如登录页返回）自动刷新首页数据
+    const uid = (api.getUser() || {}).id || "";
+    if (this._fetched && uid !== this._lastUid) {
+      this.fetch();
+    }
   },
 
   onPullDownRefresh() {
@@ -37,6 +42,8 @@ Page({
       .then((data) => {
         const thisWeek = (data.thisWeek || []).map(fmt.decoratePhoto);
         const featured = (data.featured || []).map(fmt.decoratePhoto);
+        this._fetched = true;
+        this._lastUid = (api.getUser() || {}).id || "";
         this.setData({
           loading: false,
           thisWeek,

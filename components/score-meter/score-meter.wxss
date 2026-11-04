@@ -7,12 +7,12 @@
 
 .meter-block__verdict {
   font-size: 24rpx;
-  color: #475847;
+  color: var(--moss, #475847);
   font-weight: 600;
 }
 
 .meter-block__verdict.is-rejected {
-  color: #a73a25;
+  color: var(--danger, #a73a25);
 }
 
 .meter-block__number {
@@ -25,13 +25,13 @@
   font-size: 72rpx;
   font-weight: 600;
   font-family: Georgia, "Songti SC", serif;
-  color: #1b211a;
+  color: var(--ink, #1b211a);
   line-height: 1.1;
 }
 
 .meter-block__number .total {
   font-size: 26rpx;
-  color: #5f665a;
+  color: var(--ink-mute, #5f665a);
 }
 
 .meter-block__bar {
@@ -48,12 +48,12 @@
   left: 0;
   top: 0;
   bottom: 0;
-  background: #81907a;
+  background: var(--sage, #81907a);
   transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .meter-block__bar .fill.is-pass {
-  background: #475847;
+  background: var(--moss, #475847);
 }
 
 .meter-block__bar .mark {
@@ -62,14 +62,14 @@
   top: -4rpx;
   bottom: -4rpx;
   width: 2rpx;
-  background: #df5a34;
+  background: var(--signal, #df5a34);
 }
 
 .meter-block__legend {
   display: flex;
   justify-content: space-between;
   font-size: 20rpx;
-  color: #5f665a;
+  color: var(--ink-mute, #5f665a);
   font-family: Menlo, monospace;
 }
 
@@ -78,5 +78,5 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-family: Menlo, monospace;
-  color: #5f665a;
+  color: var(--ink-mute, #5f665a);
 }

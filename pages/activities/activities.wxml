@@ -10,22 +10,25 @@
       <view class="hero-quiet__stats">
         <text class="mono">{{publicCount}} 次公开活动 · {{photoTotal}} 张同行影像 · 邀请线 3.0</text>
       </view>
-      <button class="btn btn--forest" bindtap="onNewActivity">发起一次活动</button>
+      <button hover-class="btn-hover" class="btn btn--forest" bindtap="onNewActivity">发起一次活动</button>
     </view>
   </view>
 
-  <view wx:if="{{loading}}" class="loading">
-    <view class="loading-dots"><i></i><i></i><i></i></view>正在查看山口…
+  <view wx:if="{{loading}}" class="skeleton">
+    <view class="sk-block sk-line--lg"></view>
+    <view class="sk-block sk-row"></view>
+    <view class="sk-block sk-row"></view>
+    <view class="sk-block sk-row"></view>
   </view>
 
   <view wx:elif="{{loadError}}" class="loading">
     <view>{{loadError}}</view>
-    <button class="btn btn--outline btn--sm" style="margin-top: 24rpx;" bindtap="onRetry">再试一次</button>
+    <button hover-class="btn-hover" class="btn btn--outline btn--sm" style="margin-top: 24rpx;" bindtap="onRetry">再试一次</button>
   </view>
 
   <block wx:else>
     <!-- 入队申请提醒 -->
-    <view wx:if="{{pendingRequests.length > 0}}" class="banner banner--signal shell-pad" bindtap="onGoRequests">
+    <view wx:if="{{pendingRequests.length > 0}}" hover-class="is-hover" class="banner banner--signal shell-pad" bindtap="onGoRequests">
       <view>
         <text class="mono">REQUESTS / 入队申请</text>
         <p>有 {{pendingRequests.length}} 份入队申请，正在等你确认。</p>
@@ -40,7 +43,7 @@
         <text class="text-link" bindtap="onGoRequests">全部管理</text>
       </view>
       <view class="activity-list">
-        <view class="activity-card" wx:for="{{myActivities}}" wx:key="id" data-slug="{{item.slug}}" bindtap="onOpen">
+        <view hover-class="is-hover" class="activity-card" wx:for="{{myActivities}}" wx:key="id" data-slug="{{item.slug}}" bindtap="onOpen">
           <view class="activity-card__head">
             <text class="badge {{item.phase === 'upcoming' ? 'badge--signal' : ''}}">{{item.phaseLabel}}</text>
             <text class="mono">{{item.dateLabel}}</text>
@@ -57,7 +60,7 @@
     </view>
 
     <view wx:if="{{!loggedIn}}" class="shell">
-      <view class="banner banner--plain" bindtap="onLogin">
+      <view hover-class="is-hover" class="banner banner--plain" bindtap="onLogin">
         <text>登录后可以看到你的活动、申请与相册。</text>
         <text class="banner__arrow">→</text>
       </view>
@@ -70,7 +73,7 @@
         <text class="mono">RECRUITING</text>
       </view>
       <view class="activity-list">
-        <view class="activity-card" wx:for="{{recruiting}}" wx:key="id" data-slug="{{item.slug}}" bindtap="onOpen">
+        <view hover-class="is-hover" class="activity-card" wx:for="{{recruiting}}" wx:key="id" data-slug="{{item.slug}}" bindtap="onOpen">
           <view class="activity-card__head">
             <text class="badge {{item.phase === 'upcoming' ? 'badge--signal' : ''}}">{{item.phaseLabel}}</text>
             <text class="mono">{{item.dateLabel}}</text>
@@ -97,7 +100,7 @@
         <text class="mono">ARCHIVED WALKS</text>
       </view>
       <view class="activity-list">
-        <view class="activity-card activity-card--past" wx:for="{{past}}" wx:key="id" data-slug="{{item.slug}}" bindtap="onOpen">
+        <view hover-class="is-hover" class="activity-card activity-card--past" wx:for="{{past}}" wx:key="id" data-slug="{{item.slug}}" bindtap="onOpen">
           <view class="activity-card__head">
             <text class="badge badge--mute">{{item.phaseLabel}}</text>
             <text class="mono">{{item.dateLabel}}</text>
